@@ -1,0 +1,121 @@
+/* ══════════════════════════════════════════
+   Curved Arc Timeline
+   ══════════════════════════════════════════ */
+
+.timeline {
+  position: relative;
+  flex-shrink: 0;
+  height: 120px;
+  padding: 0 40px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 16px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.timeline svg {
+  position: absolute;
+  bottom: 16px;
+  left: 40px;
+  right: 40px;
+  width: calc(100% - 80px);
+  height: 100px;
+  overflow: visible;
+}
+
+/* Arc path */
+.timeline__arc {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 2;
+  transition: stroke var(--transition);
+}
+
+.timeline__arc-active {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  transition: stroke var(--transition);
+}
+
+/* Tick marks */
+.timeline__tick {
+  stroke: var(--text-muted);
+  stroke-width: 1;
+  opacity: 0.4;
+}
+
+.timeline__tick--major {
+  stroke: var(--text-secondary);
+  stroke-width: 1.5;
+  opacity: 0.7;
+}
+
+/* Year labels */
+.timeline__label {
+  fill: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  text-anchor: middle;
+  transition: fill var(--transition), font-size 0.3s ease;
+  cursor: pointer;
+}
+
+.timeline__label--active {
+  fill: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* Indicator dot */
+.timeline__indicator {
+  r: 6;
+  fill: var(--accent);
+  stroke: var(--bg);
+  stroke-width: 2;
+  filter: drop-shadow(0 0 6px var(--accent));
+  transition: fill var(--transition), stroke var(--transition), filter var(--transition);
+  cursor: grab;
+}
+
+.timeline__indicator:active {
+  cursor: grabbing;
+  r: 8;
+}
+
+/* iPhone name label on indicator */
+.timeline__device-label {
+  fill: var(--text-secondary);
+  font-family: 'Inter', sans-serif;
+  font-size: 8px;
+  text-anchor: middle;
+  transition: fill var(--transition);
+}
+
+@media (max-width: 768px) {
+  .timeline {
+    height: 100px;
+    padding: 0 16px;
+    padding-bottom: 12px;
+  }
+
+  .timeline svg {
+    left: 16px;
+    right: 16px;
+    width: calc(100% - 32px);
+    height: 80px;
+  }
+
+  .timeline__label {
+    font-size: 7px;
+  }
+
+  .timeline__label--active {
+    font-size: 9px;
+  }
+}

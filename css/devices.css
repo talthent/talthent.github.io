@@ -1,0 +1,430 @@
+/* ══════════════════════════════════════════
+   iPhone CSS Device Frames
+   4 eras: classic, notch, flat, island
+   ══════════════════════════════════════════ */
+
+.device {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.device__frame {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(255,255,255,0.15);
+}
+
+.device__screen {
+  position: absolute;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.device__wallpaper {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+.device__statusbar {
+  position: relative;
+  z-index: 2;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  font-size: 7px;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 0.5px 1px rgba(0,0,0,0.3);
+}
+
+.device__statusbar-time {
+  font-size: 7px;
+  font-weight: 600;
+}
+
+.device__statusbar-icons {
+  display: flex;
+  gap: 3px;
+  font-size: 6px;
+}
+
+.device__icons {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 16px 12px;
+  align-content: start;
+  justify-items: center;
+}
+
+.device__app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.device__app-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 22%;
+  object-fit: cover;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.device__app-label {
+  font-size: 6px;
+  color: #fff;
+  text-shadow: 0 0.5px 2px rgba(0,0,0,0.5);
+  text-align: center;
+  max-width: 44px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.device__dock {
+  display: none;
+}
+
+/* ── Home Indicator (for notch/flat/island eras) ── */
+.device__home-indicator {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36%;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.5);
+  z-index: 3;
+}
+
+/* ══════════════════════════════════════════
+   Era 1: Classic (2014-2016)
+   iPhone 6, 6s, 7 — rounded, home button
+   ══════════════════════════════════════════ */
+
+.device--classic .device__frame {
+  width: 170px;
+  height: 340px;
+  border-radius: 34px;
+  background: var(--device-frame);
+  border: 2px solid rgba(0,0,0,0.15);
+}
+
+.device--classic .device__screen {
+  top: 56px;
+  left: 10px;
+  right: 10px;
+  bottom: 56px;
+  border-radius: 3px;
+  background: #000;
+}
+
+/* Top bezel: speaker + camera */
+.device--classic .device__frame::before {
+  content: '';
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(0,0,0,0.4);
+  z-index: 5;
+}
+
+/* Camera dot */
+.device--classic .device__frame::after {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%) translateX(-28px);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.3);
+  z-index: 5;
+}
+
+/* Home button */
+.device--classic .device__home-btn {
+  position: absolute;
+  bottom: 13px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgba(0,0,0,0.2);
+  background: var(--device-frame);
+  z-index: 5;
+}
+
+/* Touch ID ring inside home button */
+.device--classic .device__home-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,0.15);
+}
+
+.device--classic .device__statusbar {
+  height: 18px;
+  padding: 0 10px;
+}
+
+.device--classic .device__icons {
+  padding: 12px 10px;
+  gap: 10px;
+}
+
+.device--classic .device__app-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.device--classic .device__dock {
+  height: 50px;
+}
+
+/* ══════════════════════════════════════════
+   Era 2: Notch (2017-2019)
+   iPhone X, XS, 11 — notch, edge-to-edge
+   ══════════════════════════════════════════ */
+
+.device--notch .device__frame {
+  width: 180px;
+  height: 370px;
+  border-radius: 38px;
+  background: var(--device-frame);
+  border: 2px solid rgba(0,0,0,0.15);
+}
+
+.device--notch .device__screen {
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  border-radius: 32px;
+  background: #000;
+}
+
+/* Notch */
+.device--notch .device__notch {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 42%;
+  height: 22px;
+  background: var(--device-bezel);
+  border-radius: 0 0 14px 14px;
+  z-index: 5;
+}
+
+.device--notch .device__statusbar {
+  height: 30px;
+  padding: 0 12px;
+  padding-top: 4px;
+}
+
+/* ══════════════════════════════════════════
+   Era 3: Flat (2020-2021)
+   iPhone 12, 13 — flat edges, notch
+   ══════════════════════════════════════════ */
+
+.device--flat .device__frame {
+  width: 180px;
+  height: 370px;
+  border-radius: 28px;
+  background: var(--device-frame-flat);
+  border: 2px solid rgba(0,0,0,0.2);
+}
+
+.device--flat .device__screen {
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border-radius: 24px;
+  background: #000;
+}
+
+/* Notch (smaller on flat era — 13 Pro shrunk it) */
+.device--flat .device__notch {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 34%;
+  height: 20px;
+  background: var(--device-bezel);
+  border-radius: 0 0 12px 12px;
+  z-index: 5;
+}
+
+.device--flat .device__statusbar {
+  height: 28px;
+  padding: 0 12px;
+  padding-top: 4px;
+}
+
+/* ══════════════════════════════════════════
+   Era 4: Dynamic Island (2022-2026)
+   iPhone 14 Pro+ / 15+ / 16 / 17
+   ══════════════════════════════════════════ */
+
+.device--island .device__frame {
+  width: 180px;
+  height: 370px;
+  border-radius: 28px;
+  background: var(--device-frame-flat);
+  border: 2px solid rgba(0,0,0,0.2);
+}
+
+.device--island .device__screen {
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border-radius: 24px;
+  background: #000;
+}
+
+/* Dynamic Island pill */
+.device--island .device__island {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 26%;
+  height: 16px;
+  background: var(--device-bezel);
+  border-radius: 50px;
+  z-index: 5;
+}
+
+.device--island .device__statusbar {
+  height: 34px;
+  padding: 0 12px;
+  padding-top: 8px;
+}
+
+/* ══════════════════════════════════════════
+   Pro Materials: Stainless Steel & Titanium
+   ══════════════════════════════════════════ */
+
+/* Stainless steel — polished, mirror-like chrome (11 Pro – 14 Pro) */
+.device--steel .device__frame {
+  background: linear-gradient(145deg, #f0f0f0, #c0c0c0, #e8e8e8) !important;
+  border-color: rgba(255,255,255,0.4) !important;
+  box-shadow:
+    0 8px 40px rgba(0,0,0,0.25),
+    inset 0 0 0 1px rgba(255,255,255,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+[data-theme="dark"] .device--steel .device__frame {
+  background: linear-gradient(145deg, #888, #555, #777) !important;
+  border-color: rgba(255,255,255,0.2) !important;
+  box-shadow:
+    0 8px 40px rgba(0,0,0,0.4),
+    inset 0 0 0 1px rgba(255,255,255,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+/* Titanium — brushed, matte, warmer tone (15 Pro+) */
+.device--titanium .device__frame {
+  background: linear-gradient(145deg, #d6d1ca, #bab4ac, #c8c2ba) !important;
+  border-color: rgba(180,170,160,0.4) !important;
+  box-shadow:
+    0 8px 40px rgba(0,0,0,0.2),
+    inset 0 0 0 1px rgba(255,255,255,0.2);
+}
+
+[data-theme="dark"] .device--titanium .device__frame {
+  background: linear-gradient(145deg, #5a5550, #3e3a36, #4d4843) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+  box-shadow:
+    0 8px 40px rgba(0,0,0,0.4),
+    inset 0 0 0 1px rgba(255,255,255,0.08);
+}
+
+/* ══════════════════════════════════════════
+   Device Model Label
+   ══════════════════════════════════════════ */
+
+.device__model-label {
+  display: none;
+}
+
+/* ── Mobile Device Sizing ── */
+@media (max-width: 768px) {
+  .device--classic .device__frame {
+    width: 120px;
+    height: 240px;
+  }
+  .device--classic .device__screen {
+    top: 40px;
+    left: 7px;
+    right: 7px;
+    bottom: 40px;
+  }
+  .device--classic .device__home-btn {
+    width: 22px;
+    height: 22px;
+    bottom: 9px;
+  }
+  .device--notch .device__frame {
+    width: 130px;
+    height: 266px;
+  }
+  .device--notch .device__screen {
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+  }
+  .device--flat .device__frame,
+  .device--island .device__frame {
+    width: 130px;
+    height: 266px;
+  }
+  .device--flat .device__screen,
+  .device--island .device__screen {
+    top: 3px;
+    left: 3px;
+    right: 3px;
+    bottom: 3px;
+  }
+  .device__app-icon {
+    width: 26px;
+    height: 26px;
+  }
+  .device__app-label {
+    font-size: 5px;
+  }
+  .device__icons {
+    gap: 6px;
+    padding: 10px 6px;
+  }
+}
