@@ -97,6 +97,24 @@ function createDeviceFrame(yearData) {
   }
 
   frame.appendChild(screen);
+
+  // Side buttons
+  const power = document.createElement('div');
+  power.className = 'device__side-btn device__side-btn--power';
+  frame.appendChild(power);
+
+  const volUp = document.createElement('div');
+  volUp.className = 'device__side-btn device__side-btn--vol-up';
+  frame.appendChild(volUp);
+
+  const volDown = document.createElement('div');
+  volDown.className = 'device__side-btn device__side-btn--vol-down';
+  frame.appendChild(volDown);
+
+  const silent = document.createElement('div');
+  silent.className = 'device__side-btn device__side-btn--silent';
+  frame.appendChild(silent);
+
   wrapper.appendChild(frame);
 
   // Model label below the phone

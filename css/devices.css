@@ -11,7 +11,6 @@
 .device__frame {
   position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(255,255,255,0.15);
 }
 
 .device__screen {
@@ -110,6 +109,31 @@
   z-index: 3;
 }
 
+/* ── Side Buttons ── */
+.device__side-btn {
+  position: absolute;
+  z-index: 6;
+  border-radius: 2px;
+}
+
+.device__side-btn--power {
+  right: -3px;
+  width: 3px;
+}
+
+.device__side-btn--vol-up,
+.device__side-btn--vol-down {
+  left: -3px;
+  width: 3px;
+}
+
+.device__side-btn--silent {
+  left: -3px;
+  width: 3px;
+  height: 10px;
+  border-radius: 1px;
+}
+
 /* ══════════════════════════════════════════
    Era 1: Classic (2014-2016)
    iPhone 6, 6s, 7 — rounded, home button
@@ -119,8 +143,27 @@
   width: 170px;
   height: 340px;
   border-radius: 34px;
-  background: var(--device-frame);
-  border: 2px solid rgba(0,0,0,0.15);
+  background: linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 50%, #181818 100%);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow:
+    0 12px 48px rgba(0,0,0,0.4),
+    0 2px 8px rgba(0,0,0,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    inset 0 -1px 0 rgba(0,0,0,0.2),
+    inset 1px 0 0 rgba(255,255,255,0.06),
+    inset -1px 0 0 rgba(255,255,255,0.06);
+}
+
+[data-theme="dark"] .device--classic .device__frame {
+  background: linear-gradient(180deg, #e8e8e8 0%, #d8d8d8 50%, #ccc 100%);
+  border-color: rgba(255,255,255,0.4);
+  box-shadow:
+    0 12px 48px rgba(0,0,0,0.3),
+    0 2px 8px rgba(0,0,0,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.7),
+    inset 0 -1px 0 rgba(0,0,0,0.08),
+    inset 1px 0 0 rgba(255,255,255,0.4),
+    inset -1px 0 0 rgba(255,255,255,0.4);
 }
 
 .device--classic .device__screen {
@@ -130,33 +173,36 @@
   bottom: 56px;
   border-radius: 3px;
   background: #000;
+  box-shadow: inset 0 0 3px rgba(0,0,0,0.5);
 }
 
-/* Top bezel: speaker + camera */
+/* Speaker grille */
 .device--classic .device__frame::before {
   content: '';
   position: absolute;
   top: 24px;
   left: 50%;
   transform: translateX(-50%);
-  width: 32px;
+  width: 30px;
   height: 4px;
   border-radius: 2px;
-  background: rgba(0,0,0,0.4);
+  background: linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.4));
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.3);
   z-index: 5;
 }
 
-/* Camera dot */
+/* Front camera */
 .device--classic .device__frame::after {
   content: '';
   position: absolute;
-  top: 18px;
+  top: 19px;
   left: 50%;
-  transform: translateX(-50%) translateX(-28px);
+  transform: translateX(-50%) translateX(-26px);
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: rgba(0,0,0,0.3);
+  background: radial-gradient(circle, #2a2a3a 40%, #1a1a2a 60%, rgba(0,0,0,0.4) 100%);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.3);
   z-index: 5;
 }
 
@@ -169,22 +215,76 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 2px solid rgba(0,0,0,0.2);
-  background: var(--device-frame);
+  border: 1.5px solid rgba(255,255,255,0.1);
+  background: linear-gradient(180deg, #222, #1a1a1a);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.3),
+    inset 0 1px 1px rgba(255,255,255,0.08);
   z-index: 5;
 }
 
-/* Touch ID ring inside home button */
+[data-theme="dark"] .device--classic .device__home-btn {
+  border-color: rgba(0,0,0,0.15);
+  background: linear-gradient(180deg, #d0d0d0, #b8b8b8);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.1),
+    inset 0 1px 1px rgba(255,255,255,0.5);
+}
+
+/* Touch ID ring */
 .device--classic .device__home-btn::after {
   content: '';
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border-radius: 4px;
-  border: 1px solid rgba(0,0,0,0.15);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: inset 0 0 1px rgba(0,0,0,0.2);
+}
+
+[data-theme="dark"] .device--classic .device__home-btn::after {
+  border-color: rgba(0,0,0,0.12);
+}
+
+/* Side buttons — classic */
+.device--classic .device__side-btn--power {
+  right: -2px;
+  top: 80px;
+  height: 28px;
+  background: linear-gradient(90deg, #222, #333);
+}
+
+.device--classic .device__side-btn--vol-up {
+  left: -2px;
+  top: 76px;
+  height: 22px;
+  background: linear-gradient(270deg, #222, #333);
+}
+
+.device--classic .device__side-btn--vol-down {
+  left: -2px;
+  top: 104px;
+  height: 22px;
+  background: linear-gradient(270deg, #222, #333);
+}
+
+.device--classic .device__side-btn--silent {
+  left: -2px;
+  top: 56px;
+  background: linear-gradient(270deg, #222, #333);
+}
+
+[data-theme="dark"] .device--classic .device__side-btn--power {
+  background: linear-gradient(90deg, #bbb, #d0d0d0);
+}
+
+[data-theme="dark"] .device--classic .device__side-btn--vol-up,
+[data-theme="dark"] .device--classic .device__side-btn--vol-down,
+[data-theme="dark"] .device--classic .device__side-btn--silent {
+  background: linear-gradient(270deg, #bbb, #d0d0d0);
 }
 
 .device--classic .device__statusbar {
@@ -202,21 +302,36 @@
   height: 40px;
 }
 
-.device--classic .device__dock {
-  height: 50px;
-}
-
 /* ══════════════════════════════════════════
    Era 2: Notch (2017-2019)
-   iPhone X, XS, 11 — notch, edge-to-edge
+   iPhone X, XS, 11 Pro — notch, edge-to-edge
    ══════════════════════════════════════════ */
 
 .device--notch .device__frame {
   width: 180px;
   height: 370px;
   border-radius: 38px;
-  background: var(--device-frame);
-  border: 2px solid rgba(0,0,0,0.15);
+  background: linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 50%, #181818 100%);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow:
+    0 12px 48px rgba(0,0,0,0.4),
+    0 2px 8px rgba(0,0,0,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.1),
+    inset 0 -1px 0 rgba(0,0,0,0.2),
+    inset 1px 0 0 rgba(255,255,255,0.05),
+    inset -1px 0 0 rgba(255,255,255,0.05);
+}
+
+[data-theme="dark"] .device--notch .device__frame {
+  background: linear-gradient(180deg, #e0e0e0 0%, #d0d0d0 50%, #c4c4c4 100%);
+  border-color: rgba(255,255,255,0.4);
+  box-shadow:
+    0 12px 48px rgba(0,0,0,0.3),
+    0 2px 8px rgba(0,0,0,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.6),
+    inset 0 -1px 0 rgba(0,0,0,0.08),
+    inset 1px 0 0 rgba(255,255,255,0.3),
+    inset -1px 0 0 rgba(255,255,255,0.3);
 }
 
 .device--notch .device__screen {
@@ -226,6 +341,7 @@
   bottom: 5px;
   border-radius: 32px;
   background: #000;
+  box-shadow: inset 0 0 2px rgba(0,0,0,0.4);
 }
 
 /* Notch */
@@ -236,9 +352,59 @@
   transform: translateX(-50%);
   width: 42%;
   height: 22px;
-  background: var(--device-bezel);
+  background: #0a0a0a;
   border-radius: 0 0 14px 14px;
   z-index: 5;
+}
+
+.device--notch .device__notch::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  right: 18px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #1a1a2e 30%, #0d0d1a 70%);
+  box-shadow: 0 0 0 1px rgba(40,40,60,0.5);
+}
+
+/* Side buttons — notch */
+.device--notch .device__side-btn--power {
+  right: -2px;
+  top: 100px;
+  height: 36px;
+  background: linear-gradient(90deg, #222, #333);
+}
+
+.device--notch .device__side-btn--vol-up {
+  left: -2px;
+  top: 90px;
+  height: 24px;
+  background: linear-gradient(270deg, #222, #333);
+}
+
+.device--notch .device__side-btn--vol-down {
+  left: -2px;
+  top: 120px;
+  height: 24px;
+  background: linear-gradient(270deg, #222, #333);
+}
+
+.device--notch .device__side-btn--silent {
+  left: -2px;
+  top: 70px;
+  background: linear-gradient(270deg, #222, #333);
+}
+
+[data-theme="dark"] .device--notch .device__side-btn--power {
+  background: linear-gradient(90deg, #bbb, #d0d0d0);
+}
+
+[data-theme="dark"] .device--notch .device__side-btn--vol-up,
+[data-theme="dark"] .device--notch .device__side-btn--vol-down,
+[data-theme="dark"] .device--notch .device__side-btn--silent {
+  background: linear-gradient(270deg, #bbb, #d0d0d0);
 }
 
 .device--notch .device__statusbar {
@@ -249,15 +415,34 @@
 
 /* ══════════════════════════════════════════
    Era 3: Flat (2020-2021)
-   iPhone 12, 13 — flat edges, notch
+   iPhone 12/13 Pro — flat edges
    ══════════════════════════════════════════ */
 
 .device--flat .device__frame {
   width: 180px;
   height: 370px;
   border-radius: 28px;
-  background: var(--device-frame-flat);
-  border: 2px solid rgba(0,0,0,0.2);
+  background: linear-gradient(180deg, #262626 0%, #1a1a1a 50%, #141414 100%);
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow:
+    0 12px 48px rgba(0,0,0,0.4),
+    0 2px 8px rgba(0,0,0,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    inset 0 -1px 0 rgba(0,0,0,0.3),
+    inset 2px 0 0 rgba(255,255,255,0.04),
+    inset -2px 0 0 rgba(0,0,0,0.1);
+}
+
+[data-theme="dark"] .device--flat .device__frame {
+  background: linear-gradient(180deg, #ddd 0%, #ccc 50%, #c0c0c0 100%);
+  border-color: rgba(255,255,255,0.4);
+  box-shadow:
+    0 12px 48px rgba(0,0,0,0.3),
+    0 2px 8px rgba(0,0,0,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.7),
+    inset 0 -1px 0 rgba(0,0,0,0.08),
+    inset 2px 0 0 rgba(255,255,255,0.2),
+    inset -2px 0 0 rgba(0,0,0,0.05);
 }
 
 .device--flat .device__screen {
@@ -267,9 +452,10 @@
   bottom: 4px;
   border-radius: 24px;
   background: #000;
+  box-shadow: inset 0 0 2px rgba(0,0,0,0.4);
 }
 
-/* Notch (smaller on flat era — 13 Pro shrunk it) */
+/* Notch (smaller — 13 Pro) */
 .device--flat .device__notch {
   position: absolute;
   top: 4px;
@@ -277,9 +463,66 @@
   transform: translateX(-50%);
   width: 34%;
   height: 20px;
-  background: var(--device-bezel);
+  background: #0a0a0a;
   border-radius: 0 0 12px 12px;
   z-index: 5;
+}
+
+.device--flat .device__notch::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  right: 14px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #1a1a2e 30%, #0d0d1a 70%);
+  box-shadow: 0 0 0 1px rgba(40,40,60,0.5);
+}
+
+/* Side buttons — flat */
+.device--flat .device__side-btn--power {
+  right: -3px;
+  top: 100px;
+  height: 36px;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: linear-gradient(90deg, #1a1a1a, #2a2a2a, #1a1a1a);
+}
+
+.device--flat .device__side-btn--vol-up {
+  left: -3px;
+  top: 90px;
+  height: 24px;
+  width: 3px;
+  border-radius: 2px 0 0 2px;
+  background: linear-gradient(270deg, #1a1a1a, #2a2a2a, #1a1a1a);
+}
+
+.device--flat .device__side-btn--vol-down {
+  left: -3px;
+  top: 120px;
+  height: 24px;
+  width: 3px;
+  border-radius: 2px 0 0 2px;
+  background: linear-gradient(270deg, #1a1a1a, #2a2a2a, #1a1a1a);
+}
+
+.device--flat .device__side-btn--silent {
+  left: -3px;
+  top: 70px;
+  border-radius: 2px 0 0 2px;
+  background: linear-gradient(270deg, #1a1a1a, #2a2a2a, #1a1a1a);
+}
+
+[data-theme="dark"] .device--flat .device__side-btn--power {
+  background: linear-gradient(90deg, #bbb, #d5d5d5, #bbb);
+}
+
+[data-theme="dark"] .device--flat .device__side-btn--vol-up,
+[data-theme="dark"] .device--flat .device__side-btn--vol-down,
+[data-theme="dark"] .device--flat .device__side-btn--silent {
+  background: linear-gradient(270deg, #bbb, #d5d5d5, #bbb);
 }
 
 .device--flat .device__statusbar {
@@ -297,8 +540,27 @@
   width: 180px;
   height: 370px;
   border-radius: 28px;
-  background: var(--device-frame-flat);
-  border: 2px solid rgba(0,0,0,0.2);
+  background: linear-gradient(180deg, #262626 0%, #1a1a1a 50%, #141414 100%);
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow:
+    0 12px 48px rgba(0,0,0,0.4),
+    0 2px 8px rgba(0,0,0,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    inset 0 -1px 0 rgba(0,0,0,0.3),
+    inset 2px 0 0 rgba(255,255,255,0.04),
+    inset -2px 0 0 rgba(0,0,0,0.1);
+}
+
+[data-theme="dark"] .device--island .device__frame {
+  background: linear-gradient(180deg, #ddd 0%, #ccc 50%, #c0c0c0 100%);
+  border-color: rgba(255,255,255,0.4);
+  box-shadow:
+    0 12px 48px rgba(0,0,0,0.3),
+    0 2px 8px rgba(0,0,0,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.7),
+    inset 0 -1px 0 rgba(0,0,0,0.08),
+    inset 2px 0 0 rgba(255,255,255,0.2),
+    inset -2px 0 0 rgba(0,0,0,0.05);
 }
 
 .device--island .device__screen {
@@ -308,6 +570,7 @@
   bottom: 4px;
   border-radius: 24px;
   background: #000;
+  box-shadow: inset 0 0 2px rgba(0,0,0,0.4);
 }
 
 /* Dynamic Island pill */
@@ -318,9 +581,74 @@
   transform: translateX(-50%);
   width: 26%;
   height: 16px;
-  background: var(--device-bezel);
+  background: #0a0a0a;
   border-radius: 50px;
   z-index: 5;
+  box-shadow: 0 0 0 0.5px rgba(60,60,60,0.3);
+}
+
+.device--island .device__island::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #1a1a2e 30%, #0d0d1a 70%);
+  box-shadow: 0 0 0 1px rgba(40,40,60,0.4);
+}
+
+/* Side buttons — island */
+.device--island .device__side-btn--power {
+  right: -3px;
+  top: 100px;
+  height: 36px;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: linear-gradient(90deg, #1a1a1a, #2a2a2a, #1a1a1a);
+}
+
+.device--island .device__side-btn--vol-up {
+  left: -3px;
+  top: 90px;
+  height: 24px;
+  width: 3px;
+  border-radius: 2px 0 0 2px;
+  background: linear-gradient(270deg, #1a1a1a, #2a2a2a, #1a1a1a);
+}
+
+.device--island .device__side-btn--vol-down {
+  left: -3px;
+  top: 120px;
+  height: 24px;
+  width: 3px;
+  border-radius: 2px 0 0 2px;
+  background: linear-gradient(270deg, #1a1a1a, #2a2a2a, #1a1a1a);
+}
+
+.device--island .device__side-btn--silent {
+  left: -3px;
+  top: 70px;
+  border-radius: 2px 0 0 2px;
+  background: linear-gradient(270deg, #1a1a1a, #2a2a2a, #1a1a1a);
+}
+
+[data-theme="dark"] .device--island .device__side-btn--power {
+  background: linear-gradient(90deg, #bbb, #d5d5d5, #bbb);
+}
+
+[data-theme="dark"] .device--island .device__side-btn--vol-up,
+[data-theme="dark"] .device--island .device__side-btn--vol-down,
+[data-theme="dark"] .device--island .device__side-btn--silent {
+  background: linear-gradient(270deg, #bbb, #d5d5d5, #bbb);
+}
+
+/* Action button (replaces silent switch on 15 Pro+) */
+.device--island.device--titanium .device__side-btn--silent {
+  height: 12px;
+  border-radius: 2px 0 0 2px;
 }
 
 .device--island .device__statusbar {
@@ -333,40 +661,104 @@
    Pro Materials: Stainless Steel & Titanium
    ══════════════════════════════════════════ */
 
-/* Stainless steel — polished, mirror-like chrome (11 Pro – 14 Pro) */
+/* Stainless steel — polished black (light) / polished silver (dark) */
+/* Light theme: glossy space black */
 .device--steel .device__frame {
-  background: linear-gradient(145deg, #f0f0f0, #c0c0c0, #e8e8e8) !important;
-  border-color: rgba(255,255,255,0.4) !important;
-  box-shadow:
-    0 8px 40px rgba(0,0,0,0.25),
-    inset 0 0 0 1px rgba(255,255,255,0.5),
-    inset 0 1px 0 rgba(255,255,255,0.8);
-}
-
-[data-theme="dark"] .device--steel .device__frame {
-  background: linear-gradient(145deg, #888, #555, #777) !important;
-  border-color: rgba(255,255,255,0.2) !important;
-  box-shadow:
-    0 8px 40px rgba(0,0,0,0.4),
-    inset 0 0 0 1px rgba(255,255,255,0.25),
-    inset 0 1px 0 rgba(255,255,255,0.3);
-}
-
-/* Titanium — brushed, matte, warmer tone (15 Pro+) */
-.device--titanium .device__frame {
-  background: linear-gradient(145deg, #d6d1ca, #bab4ac, #c8c2ba) !important;
-  border-color: rgba(180,170,160,0.4) !important;
-  box-shadow:
-    0 8px 40px rgba(0,0,0,0.2),
-    inset 0 0 0 1px rgba(255,255,255,0.2);
-}
-
-[data-theme="dark"] .device--titanium .device__frame {
-  background: linear-gradient(145deg, #5a5550, #3e3a36, #4d4843) !important;
+  background: linear-gradient(160deg,
+    #3a3a3a 0%, #222 15%, #444 30%, #1a1a1a 50%,
+    #333 70%, #252525 85%, #3a3a3a 100%) !important;
   border-color: rgba(255,255,255,0.1) !important;
   box-shadow:
-    0 8px 40px rgba(0,0,0,0.4),
-    inset 0 0 0 1px rgba(255,255,255,0.08);
+    0 12px 48px rgba(0,0,0,0.5),
+    0 2px 8px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.2),
+    inset 0 -1px 0 rgba(0,0,0,0.2),
+    inset 2px 0 0 rgba(255,255,255,0.1),
+    inset -1px 0 0 rgba(0,0,0,0.15) !important;
+}
+
+.device--steel .device__side-btn--power {
+  background: linear-gradient(90deg, #222, #3a3a3a, #222) !important;
+}
+
+.device--steel .device__side-btn--vol-up,
+.device--steel .device__side-btn--vol-down,
+.device--steel .device__side-btn--silent {
+  background: linear-gradient(270deg, #222, #3a3a3a, #222) !important;
+}
+
+/* Dark theme: polished silver steel */
+[data-theme="dark"] .device--steel .device__frame {
+  background: linear-gradient(160deg,
+    #eee 0%, #d8d8d8 15%, #f4f4f4 30%, #ccc 50%,
+    #e0e0e0 70%, #d0d0d0 85%, #e8e8e8 100%) !important;
+  border-color: rgba(255,255,255,0.4) !important;
+  box-shadow:
+    0 12px 48px rgba(0,0,0,0.3),
+    0 2px 8px rgba(0,0,0,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.9),
+    inset 0 -1px 0 rgba(0,0,0,0.06),
+    inset 2px 0 0 rgba(255,255,255,0.6),
+    inset -1px 0 0 rgba(0,0,0,0.04) !important;
+}
+
+[data-theme="dark"] .device--steel .device__side-btn--power {
+  background: linear-gradient(90deg, #ccc, #eee, #ccc) !important;
+}
+
+[data-theme="dark"] .device--steel .device__side-btn--vol-up,
+[data-theme="dark"] .device--steel .device__side-btn--vol-down,
+[data-theme="dark"] .device--steel .device__side-btn--silent {
+  background: linear-gradient(270deg, #ccc, #eee, #ccc) !important;
+}
+
+/* Titanium — brushed dark (light) / brushed natural (dark) */
+/* Light theme: dark titanium */
+.device--titanium .device__frame {
+  background: linear-gradient(180deg,
+    #3e3a36 0%, #34302c 30%, #2a2622 60%, #322e2a 100%) !important;
+  border-color: rgba(255,255,255,0.06) !important;
+  box-shadow:
+    0 12px 48px rgba(0,0,0,0.4),
+    0 2px 8px rgba(0,0,0,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.1),
+    inset 0 -1px 0 rgba(0,0,0,0.15),
+    inset 1px 0 0 rgba(255,255,255,0.05),
+    inset -1px 0 0 rgba(0,0,0,0.1) !important;
+}
+
+.device--titanium .device__side-btn--power {
+  background: linear-gradient(90deg, #2a2622, #3e3a36, #2a2622) !important;
+}
+
+.device--titanium .device__side-btn--vol-up,
+.device--titanium .device__side-btn--vol-down,
+.device--titanium .device__side-btn--silent {
+  background: linear-gradient(270deg, #2a2622, #3e3a36, #2a2622) !important;
+}
+
+/* Dark theme: natural titanium */
+[data-theme="dark"] .device--titanium .device__frame {
+  background: linear-gradient(180deg,
+    #d2cdc6 0%, #c4bfb7 30%, #b8b3ab 60%, #c0bbb3 100%) !important;
+  border-color: rgba(180,170,160,0.3) !important;
+  box-shadow:
+    0 12px 48px rgba(0,0,0,0.25),
+    0 2px 8px rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.35),
+    inset 0 -1px 0 rgba(0,0,0,0.06),
+    inset 1px 0 0 rgba(255,255,255,0.15),
+    inset -1px 0 0 rgba(0,0,0,0.04) !important;
+}
+
+[data-theme="dark"] .device--titanium .device__side-btn--power {
+  background: linear-gradient(90deg, #b0a89e, #c8c0b6, #b0a89e) !important;
+}
+
+[data-theme="dark"] .device--titanium .device__side-btn--vol-up,
+[data-theme="dark"] .device--titanium .device__side-btn--vol-down,
+[data-theme="dark"] .device--titanium .device__side-btn--silent {
+  background: linear-gradient(270deg, #b0a89e, #c8c0b6, #b0a89e) !important;
 }
 
 /* ══════════════════════════════════════════
@@ -426,5 +818,11 @@
   .device__icons {
     gap: 6px;
     padding: 10px 6px;
+  }
+  .device__side-btn--power,
+  .device__side-btn--vol-up,
+  .device__side-btn--vol-down,
+  .device__side-btn--silent {
+    display: none;
   }
 }

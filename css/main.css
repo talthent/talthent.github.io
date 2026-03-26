@@ -26,9 +26,11 @@
   --toggle-icon: '\2600\FE0F';
   --overlay-bg: rgba(255,255,255,0.92);
   --timeline-bg: rgba(245,245,247,0.95);
-  --device-bezel: #1a1a1a;
-  --device-frame: linear-gradient(145deg, #e8e8e8, #c8c8c8);
-  --device-frame-flat: linear-gradient(145deg, #e0e0e0, #b8b8b8);
+  --device-bezel: #000;
+  --device-frame: linear-gradient(145deg, #333, #1a1a1a);
+  --device-frame-flat: linear-gradient(145deg, #2a2a2a, #151515);
+  --device-btn: #333;
+  --device-btn-highlight: #444;
 }
 
 /* ── Dark Theme ── */
@@ -50,9 +52,11 @@
   --toggle-icon: '\1F319';
   --overlay-bg: rgba(10,10,10,0.92);
   --timeline-bg: rgba(15,15,15,0.95);
-  --device-bezel: #000;
-  --device-frame: linear-gradient(145deg, #666, #444);
-  --device-frame-flat: linear-gradient(145deg, #5a5a5a, #3a3a3a);
+  --device-bezel: #1a1a1a;
+  --device-frame: linear-gradient(145deg, #e8e8e8, #d0d0d0);
+  --device-frame-flat: linear-gradient(145deg, #e0e0e0, #c8c8c8);
+  --device-btn: #ccc;
+  --device-btn-highlight: #e0e0e0;
 }
 
 html {

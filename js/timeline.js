@@ -1,10 +1,10 @@
 const Timeline = (() => {
   let svgEl;
   let arcPath;
-  let arcActivePath;
-  let indicator;
   let container;
-  let labels = [];
+  let indicatorEl, ring1El, ring2El, ring3El;
+  let labelEls = [];
+  let tickEls = [];
   let onScrub = null;
   let isDragging = false;
   let totalLength = 0;
@@ -16,89 +16,75 @@ const Timeline = (() => {
     container = containerEl;
     onScrub = onChange;
 
+    // SVG only for the arc path (stretched)
     svgEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svgEl.setAttribute('viewBox', '0 0 1000 100');
     svgEl.setAttribute('preserveAspectRatio', 'none');
+    svgEl.classList.add('timeline__svg');
 
-    // Arc path — more pronounced upward curve
-    const arcD = 'M 30,90 Q 500,5 970,90';
+    const arcD = 'M 30,85 Q 500,10 970,85';
 
-    // Background arc
     arcPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     arcPath.setAttribute('d', arcD);
     arcPath.setAttribute('class', 'timeline__arc');
     svgEl.appendChild(arcPath);
 
-    // Active portion arc (will be clipped via dasharray)
-    arcActivePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    arcActivePath.setAttribute('d', arcD);
-    arcActivePath.setAttribute('class', 'timeline__arc-active');
-    svgEl.appendChild(arcActivePath);
+    container.appendChild(svgEl);
 
     totalLength = arcPath.getTotalLength();
 
-    // Create tick marks and labels
+    // Create HTML tick marks and labels
     for (let year = YEAR_START; year <= YEAR_END; year++) {
-      const t = (year - YEAR_START) / YEAR_COUNT;
-      const pt = arcPath.getPointAtLength(t * totalLength);
-
-      // Get tangent for perpendicular tick
-      const pt1 = arcPath.getPointAtLength(Math.max(0, t * totalLength - 2));
-      const pt2 = arcPath.getPointAtLength(Math.min(totalLength, t * totalLength + 2));
-      const angle = Math.atan2(pt2.y - pt1.y, pt2.x - pt1.x);
-      const perpAngle = angle - Math.PI / 2;
-
       // Major tick
-      const tickLen = 8;
-      const tick = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-      tick.setAttribute('x1', pt.x + Math.cos(perpAngle) * -2);
-      tick.setAttribute('y1', pt.y + Math.sin(perpAngle) * -2);
-      tick.setAttribute('x2', pt.x + Math.cos(perpAngle) * tickLen);
-      tick.setAttribute('y2', pt.y + Math.sin(perpAngle) * tickLen);
-      tick.setAttribute('class', 'timeline__tick--major');
-      svgEl.appendChild(tick);
+      const tick = document.createElement('div');
+      tick.className = 'timeline__tick-el timeline__tick-el--major';
+      container.appendChild(tick);
+      tickEls.push({ el: tick, t: (year - YEAR_START) / YEAR_COUNT, major: true });
 
-      // Year label
-      const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      label.setAttribute('x', pt.x);
-      label.setAttribute('y', pt.y + tickLen + 14);
-      label.setAttribute('class', 'timeline__label');
+      // Label
+      const label = document.createElement('div');
+      label.className = 'timeline__label-el';
       label.textContent = year;
       label.dataset.year = year;
       label.addEventListener('click', (e) => {
         e.stopPropagation();
         if (onScrub) onScrub(year - YEAR_START);
       });
-      svgEl.appendChild(label);
-      labels.push(label);
+      container.appendChild(label);
+      labelEls.push(label);
 
-      // Minor ticks (months) between this year and next
+      // Minor ticks
       if (year < YEAR_END) {
         for (let m = 1; m < 4; m++) {
           const mt = ((year - YEAR_START) + m / 4) / YEAR_COUNT;
-          const mpt = arcPath.getPointAtLength(mt * totalLength);
-          const mpt1 = arcPath.getPointAtLength(Math.max(0, mt * totalLength - 2));
-          const mpt2 = arcPath.getPointAtLength(Math.min(totalLength, mt * totalLength + 2));
-          const mAngle = Math.atan2(mpt2.y - mpt1.y, mpt2.x - mpt1.x) - Math.PI / 2;
-
-          const minorTick = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-          minorTick.setAttribute('x1', mpt.x);
-          minorTick.setAttribute('y1', mpt.y);
-          minorTick.setAttribute('x2', mpt.x + Math.cos(mAngle) * 4);
-          minorTick.setAttribute('y2', mpt.y + Math.sin(mAngle) * 4);
-          minorTick.setAttribute('class', 'timeline__tick');
-          svgEl.appendChild(minorTick);
+          const minorTick = document.createElement('div');
+          minorTick.className = 'timeline__tick-el';
+          container.appendChild(minorTick);
+          tickEls.push({ el: minorTick, t: mt, major: false });
         }
       }
     }
 
-    // Indicator dot
-    indicator = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    indicator.setAttribute('class', 'timeline__indicator');
-    indicator.setAttribute('r', '6');
-    svgEl.appendChild(indicator);
+    // Indicator rings + dot (HTML)
+    ring3El = document.createElement('div');
+    ring3El.className = 'timeline__ring timeline__ring--3';
+    container.appendChild(ring3El);
 
-    container.appendChild(svgEl);
+    ring2El = document.createElement('div');
+    ring2El.className = 'timeline__ring timeline__ring--2';
+    container.appendChild(ring2El);
+
+    ring1El = document.createElement('div');
+    ring1El.className = 'timeline__ring timeline__ring--1';
+    container.appendChild(ring1El);
+
+    indicatorEl = document.createElement('div');
+    indicatorEl.className = 'timeline__dot';
+    container.appendChild(indicatorEl);
+
+    // Position everything
+    positionElements();
+    window.addEventListener('resize', positionElements);
 
     // Interaction events
     container.addEventListener('mousedown', handleStart);
@@ -108,7 +94,6 @@ const Timeline = (() => {
     window.addEventListener('mouseup', handleEnd);
     window.addEventListener('touchend', handleEnd);
 
-    // Mouse wheel
     container.addEventListener('wheel', (e) => {
       e.preventDefault();
       const currentIdx = Carousel.getCurrentIndex();
@@ -118,6 +103,69 @@ const Timeline = (() => {
         if (onScrub) onScrub(Math.max(currentIdx - 1, 0));
       }
     }, { passive: false });
+  }
+
+  function getScreenPoint(t) {
+    const svgPt = arcPath.getPointAtLength(t * totalLength);
+    const rect = svgEl.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    return {
+      x: rect.left - containerRect.left + (svgPt.x / 1000) * rect.width,
+      y: rect.top - containerRect.top + (svgPt.y / 100) * rect.height
+    };
+  }
+
+  function getTangentAngle(t) {
+    const len = t * totalLength;
+    const pt1 = arcPath.getPointAtLength(Math.max(0, len - 2));
+    const pt2 = arcPath.getPointAtLength(Math.min(totalLength, len + 2));
+    const rect = svgEl.getBoundingClientRect();
+    // Scale to screen coords
+    const dx = (pt2.x - pt1.x) / 1000 * rect.width;
+    const dy = (pt2.y - pt1.y) / 100 * rect.height;
+    return Math.atan2(dy, dx);
+  }
+
+  function positionElements() {
+    // Position ticks
+    tickEls.forEach(({ el, t, major }) => {
+      const pt = getScreenPoint(t);
+      const angle = getTangentAngle(t);
+      const perpAngle = angle - Math.PI / 2;
+      const len = major ? 8 : 5;
+      const tickX = pt.x + Math.cos(perpAngle + Math.PI) * len;
+      const tickY = pt.y + Math.sin(perpAngle + Math.PI) * len;
+      el.style.left = pt.x + 'px';
+      el.style.top = pt.y + 'px';
+      el.style.width = len + 'px';
+      el.style.transform = `translate(0, 0) rotate(${perpAngle + Math.PI}rad)`;
+      el.style.transformOrigin = '0 0';
+    });
+
+    // Position labels
+    labelEls.forEach(label => {
+      const year = parseInt(label.dataset.year);
+      const t = (year - YEAR_START) / YEAR_COUNT;
+      const pt = getScreenPoint(t);
+      const angle = getTangentAngle(t);
+      const degrees = angle * (180 / Math.PI);
+      label.style.left = pt.x + 'px';
+      label.style.top = (pt.y + 10) + 'px';
+      label.style.transform = `translateX(-50%) rotate(${degrees}deg)`;
+    });
+
+    // Position indicator at current index
+    positionIndicator(Carousel.getCurrentIndex());
+  }
+
+  function positionIndicator(index) {
+    const t = index / YEAR_COUNT;
+    const pt = getScreenPoint(t);
+
+    [indicatorEl, ring1El, ring2El, ring3El].forEach(el => {
+      el.style.left = pt.x + 'px';
+      el.style.top = pt.y + 'px';
+    });
   }
 
   function handleStart(e) {
@@ -134,7 +182,6 @@ const Timeline = (() => {
     const relX = (clientX - rect.left) / rect.width;
     const clampedX = Math.max(0, Math.min(1, relX));
 
-    // Map x position to year index
     const index = Math.round(clampedX * YEAR_COUNT);
     if (onScrub) onScrub(index);
   }
@@ -144,25 +191,16 @@ const Timeline = (() => {
   }
 
   function update(index) {
-    const t = index / YEAR_COUNT;
-    const pt = arcPath.getPointAtLength(t * totalLength);
-
-    // Move indicator
-    indicator.setAttribute('cx', pt.x);
-    indicator.setAttribute('cy', pt.y);
-
-    // Update active arc portion
-    const activeLen = t * totalLength;
-    arcActivePath.setAttribute('stroke-dasharray', `${activeLen} ${totalLength}`);
+    positionIndicator(index);
 
     // Update label styles
-    labels.forEach(label => {
+    labelEls.forEach(label => {
       const labelYear = parseInt(label.dataset.year);
       const yearIndex = labelYear - YEAR_START;
       if (yearIndex === index) {
-        label.setAttribute('class', 'timeline__label timeline__label--active');
+        label.classList.add('timeline__label-el--active');
       } else {
-        label.setAttribute('class', 'timeline__label');
+        label.classList.remove('timeline__label-el--active');
       }
     });
   }
