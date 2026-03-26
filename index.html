@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="light" style="color-scheme: light dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -9,44 +9,36 @@
   <meta property="og:description" content="8+ years of iOS development through every iPhone generation. From Houseparty to Lemonade.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://talthent.github.io">
-  <meta name="theme-color" content="#ff355c">
+  <meta name="theme-color" content="#ffffff" id="themeColorMeta">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📱</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/devices.css">
   <link rel="stylesheet" href="css/carousel.css">
   <link rel="stylesheet" href="css/timeline.css">
 </head>
 <body>
+  <a href="#carousel" class="skip-link">Skip to content</a>
 
   <div class="app">
 
     <!-- Header -->
     <header class="header">
-      <div class="header-left">
-        <h1>Tal Cohen</h1>
-        <p class="subtitle">Mobile Tech Lead at <span>Lemonade</span></p>
-      </div>
-      <div class="header-right">
-        <a href="v1.html" class="classic-link">Classic CV</a>
-        <button class="about-btn" id="aboutBtn">About Me</button>
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-          <span class="knob"></span>
-        </button>
+      <h1>Tal Cohen</h1>
+      <div class="header-actions">
+        <button class="about-btn" id="aboutBtn">About</button>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"></button>
       </div>
     </header>
 
     <!-- Main Stage -->
     <div class="stage">
-      <button class="nav-arrow nav-arrow--left" id="navLeft" aria-label="Previous year">&#8249;</button>
+      <div class="carousel" id="carousel" role="region" aria-label="Career timeline carousel"></div>
 
-      <div class="carousel" id="carousel"></div>
-
-      <button class="nav-arrow nav-arrow--right" id="navRight" aria-label="Next year">&#8250;</button>
-
-      <!-- Info below center phone -->
-      <div class="info-area" id="infoArea">
+      <!-- Info card — floating right -->
+      <div class="info-card" id="infoArea">
         <div class="info-role" id="infoRole"></div>
         <div class="info-company" id="infoCompany"></div>
         <div class="info-year-label" id="infoYear"></div>
@@ -62,7 +54,7 @@
   </div>
 
   <!-- About Overlay -->
-  <div class="about-overlay" id="aboutOverlay">
+  <div class="about-overlay" id="aboutOverlay" role="dialog" aria-modal="true" aria-label="About Me" aria-hidden="true">
     <button class="about-close" id="aboutClose" aria-label="Close">&times;</button>
     <div class="about-content" id="aboutContent"></div>
   </div>

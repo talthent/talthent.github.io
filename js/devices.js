@@ -38,7 +38,7 @@ function createDeviceFrame(yearData) {
   // Wallpaper background
   const wp = document.createElement('div');
   wp.className = 'device__wallpaper';
-  const gradient = WALLPAPER_GRADIENTS[device.ios] || WALLPAPER_GRADIENTS[19];
+  const gradient = WALLPAPER_GRADIENTS[device.ios] || WALLPAPER_GRADIENTS[26];
   wp.style.backgroundImage = gradient;
   // Try loading actual wallpaper image
   if (wallpaper) {
@@ -73,6 +73,8 @@ function createDeviceFrame(yearData) {
     icon.src = app.icon;
     icon.alt = app.name;
     icon.loading = 'lazy';
+    icon.width = 40;
+    icon.height = 40;
     appEl.appendChild(icon);
 
     const label = document.createElement('span');

@@ -3,7 +3,7 @@ const CAREER_DATA = [
     year: 2014,
     device: { model: 'iPhone 6', era: 'classic', ios: 8 },
     company: 'Life On Air',
-    role: 'Senior iOS Developer',
+    role: 'iOS Developer',
     apps: [
       { name: 'Yevvo', icon: 'assets/yevvo.png' },
       { name: 'Meerkat', icon: 'assets/meerkat.png' }
@@ -18,7 +18,7 @@ const CAREER_DATA = [
     year: 2015,
     device: { model: 'iPhone 6s', era: 'classic', ios: 9 },
     company: 'Life On Air',
-    role: 'Senior iOS Developer',
+    role: 'iOS Developer',
     apps: [
       { name: 'Meerkat', icon: 'assets/meerkat.png' },
       { name: 'Houseparty', icon: 'assets/houseparty.png' }
@@ -33,7 +33,7 @@ const CAREER_DATA = [
     year: 2016,
     device: { model: 'iPhone 7', era: 'classic', ios: 10 },
     company: 'Life On Air',
-    role: 'Senior iOS Developer',
+    role: 'iOS Developer',
     apps: [
       { name: 'Houseparty', icon: 'assets/houseparty.png' }
     ],
@@ -46,8 +46,8 @@ const CAREER_DATA = [
   {
     year: 2017,
     device: { model: 'iPhone X', era: 'notch', ios: 11 },
-    company: 'Glance Fashion / Freelance',
-    role: 'iOS Developer',
+    company: 'Glance Fashion',
+    role: 'Senior iOS Developer',
     apps: [
       { name: 'Glance', icon: 'assets/glance.png' }
     ],
@@ -61,7 +61,7 @@ const CAREER_DATA = [
     year: 2018,
     device: { model: 'iPhone XS', era: 'notch', ios: 12 },
     company: 'Lemonade',
-    role: 'iOS Developer',
+    role: 'Senior iOS Developer',
     apps: [
       { name: 'Lemonade', icon: 'assets/lemonade.jpg' }
     ],
@@ -75,7 +75,7 @@ const CAREER_DATA = [
     year: 2019,
     device: { model: 'iPhone 11 Pro', era: 'notch', ios: 13, material: 'steel' },
     company: 'Lemonade',
-    role: 'iOS Developer',
+    role: 'Senior iOS Developer',
     apps: [
       { name: 'Lemonade', icon: 'assets/lemonade.jpg' },
       { name: 'Potluck', icon: 'assets/potluck.jpg' }
@@ -90,7 +90,7 @@ const CAREER_DATA = [
     year: 2020,
     device: { model: 'iPhone 12 Pro', era: 'flat', ios: 14, material: 'steel' },
     company: 'Lemonade',
-    role: 'Lead iOS Developer',
+    role: 'Senior iOS Developer',
     apps: [
       { name: 'Lemonade', icon: 'assets/lemonade.jpg' },
       { name: 'Potluck', icon: 'assets/potluck.jpg' }
@@ -164,7 +164,7 @@ const CAREER_DATA = [
   },
   {
     year: 2025,
-    device: { model: 'iPhone 17 Pro', era: 'island', ios: 19, material: 'titanium' },
+    device: { model: 'iPhone 17 Pro', era: 'island', ios: 26, material: 'titanium' },
     company: 'Lemonade',
     role: 'Engineering Manager',
     apps: [
@@ -180,7 +180,7 @@ const CAREER_DATA = [
   },
   {
     year: 2026,
-    device: { model: 'iPhone 17 Pro', era: 'island', ios: 19, material: 'titanium' },
+    device: { model: 'iPhone 17 Pro', era: 'island', ios: 26, material: 'titanium' },
     company: 'Lemonade',
     role: 'Mobile Tech Lead',
     apps: [
@@ -234,5 +234,5 @@ const WALLPAPER_GRADIENTS = {
   16: 'linear-gradient(135deg, #f12711, #f5af19)',
   17: 'linear-gradient(135deg, #fceabb, #f8b500)',
   18: 'linear-gradient(135deg, #4158d0, #c850c0, #ffcc70)',
-  19: 'linear-gradient(135deg, #a18cd1, #fbc2eb)'
+  26: 'linear-gradient(135deg, #a18cd1, #fbc2eb)'
 };

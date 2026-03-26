@@ -5,29 +5,41 @@
 .timeline {
   position: relative;
   flex-shrink: 0;
-  height: 120px;
-  padding: 0 40px;
+  height: 80px;
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+}
+
+.timeline__inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform-origin: 0 0;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 
 .timeline__svg {
   position: absolute;
-  bottom: 16px;
+  bottom: 12px;
   left: 40px;
   right: 40px;
   width: calc(100% - 80px);
-  height: 100px;
+  height: 80px;
   overflow: visible;
 }
 
-/* Arc path */
+/* Arc path — hairline */
 .timeline__arc {
   fill: none;
-  stroke: var(--text-muted);
-  stroke-width: 2;
-  opacity: 0.5;
+  stroke: var(--border);
+  stroke-width: 0.5;
   transition: stroke var(--transition);
 }
 
@@ -35,88 +47,59 @@
 .timeline__tick-el {
   position: absolute;
   height: 1px;
-  background: var(--text-muted);
+  background: var(--border);
+  opacity: 0.5;
   pointer-events: none;
 }
 
 .timeline__tick-el--major {
-  height: 1.5px;
-  background: var(--text-secondary);
+  height: 1px;
+  background: var(--text-muted);
+  opacity: 0.8;
 }
 
 /* Year labels (HTML) */
 .timeline__label-el {
   position: absolute;
   transform: translateX(-50%);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  font-weight: 500;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 0.04em;
   color: var(--text-muted);
   cursor: pointer;
-  transition: color 0.3s ease, font-size 0.3s ease, font-weight 0.3s ease;
+  transition: color 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              font-weight 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
 }
 
 .timeline__label-el--active {
   color: var(--text);
-  font-size: 14px;
-  font-weight: 700;
+  font-weight: 500;
 }
 
-/* Indicator rings (HTML) */
-.timeline__ring,
+/* Indicator — single minimal dot */
 .timeline__dot {
   position: absolute;
+  z-index: 10;
   border-radius: 50%;
+  width: 8px;
+  height: 8px;
   transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-
-.timeline__ring--3 {
-  width: 48px;
-  height: 48px;
-  background: var(--accent);
-  opacity: 0.08;
-  animation: timeline-pulse 2s ease-in-out infinite;
-}
-
-.timeline__ring--2 {
-  width: 36px;
-  height: 36px;
-  background: var(--accent);
-  opacity: 0.15;
-  animation: timeline-pulse 2s ease-in-out 0.3s infinite;
-}
-
-.timeline__ring--1 {
-  width: 24px;
-  height: 24px;
-  background: var(--accent);
-  opacity: 0.3;
-}
-
-.timeline__dot {
-  width: 14px;
-  height: 14px;
-  background: var(--accent);
+  background: var(--text);
+  box-shadow: 0 0 6px 2px rgba(128,128,128,0.2), 0 0 14px 4px rgba(128,128,128,0.2);
   cursor: grab;
   pointer-events: auto;
-  filter: drop-shadow(0 2px 6px rgba(255, 53, 92, 0.4));
+  transition: background var(--transition), box-shadow var(--transition);
 }
 
 .timeline__dot:active {
   cursor: grabbing;
 }
 
-@keyframes timeline-pulse {
-  0% { opacity: 0.12; }
-  50% { opacity: 0.04; }
-  100% { opacity: 0.12; }
-}
-
 @media (max-width: 768px) {
   .timeline {
-    height: 100px;
+    height: 60px;
     padding: 0 16px;
   }
 
@@ -124,15 +107,11 @@
     left: 16px;
     right: 16px;
     width: calc(100% - 32px);
-    height: 80px;
-    bottom: 12px;
+    height: 60px;
+    bottom: 8px;
   }
 
   .timeline__label-el {
-    font-size: 9px;
-  }
-
-  .timeline__label-el--active {
-    font-size: 11px;
+    font-size: 8px;
   }
 }

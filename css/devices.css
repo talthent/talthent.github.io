@@ -6,6 +6,9 @@
 .device {
   position: relative;
   flex-shrink: 0;
+  filter:
+    drop-shadow(0 4px 8px rgba(0,0,0,0.08))
+    drop-shadow(0 16px 48px rgba(0,0,0,0.1));
 }
 
 .device__frame {
@@ -60,8 +63,8 @@
   flex: 1;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  padding: 16px 12px;
+  gap: 12px;
+  padding: 20px 16px;
   align-content: start;
   justify-items: center;
 }
@@ -74,15 +77,15 @@
 }
 
 .device__app-icon {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border-radius: 22%;
   object-fit: cover;
   box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
 .device__app-label {
-  font-size: 6px;
+  font-size: 7px;
   color: #fff;
   text-shadow: 0 0.5px 2px rgba(0,0,0,0.5);
   text-align: center;
@@ -140,37 +143,29 @@
    ══════════════════════════════════════════ */
 
 .device--classic .device__frame {
-  width: 170px;
-  height: 340px;
-  border-radius: 34px;
+  width: 210px;
+  height: 420px;
+  border-radius: 42px;
   background: linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 50%, #181818 100%);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.06);
   box-shadow:
-    0 12px 48px rgba(0,0,0,0.4),
-    0 2px 8px rgba(0,0,0,0.2),
-    inset 0 1px 0 rgba(255,255,255,0.12),
-    inset 0 -1px 0 rgba(0,0,0,0.2),
-    inset 1px 0 0 rgba(255,255,255,0.06),
-    inset -1px 0 0 rgba(255,255,255,0.06);
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    inset 0 -1px 0 rgba(0,0,0,0.15);
 }
 
 [data-theme="dark"] .device--classic .device__frame {
   background: linear-gradient(180deg, #e8e8e8 0%, #d8d8d8 50%, #ccc 100%);
-  border-color: rgba(255,255,255,0.4);
+  border-color: rgba(255,255,255,0.3);
   box-shadow:
-    0 12px 48px rgba(0,0,0,0.3),
-    0 2px 8px rgba(0,0,0,0.15),
-    inset 0 1px 0 rgba(255,255,255,0.7),
-    inset 0 -1px 0 rgba(0,0,0,0.08),
-    inset 1px 0 0 rgba(255,255,255,0.4),
-    inset -1px 0 0 rgba(255,255,255,0.4);
+    inset 0 1px 0 rgba(255,255,255,0.4),
+    inset 0 -1px 0 rgba(0,0,0,0.06);
 }
 
 .device--classic .device__screen {
-  top: 56px;
-  left: 10px;
-  right: 10px;
-  bottom: 56px;
+  top: 70px;
+  left: 12px;
+  right: 12px;
+  bottom: 70px;
   border-radius: 3px;
   background: #000;
   box-shadow: inset 0 0 3px rgba(0,0,0,0.5);
@@ -298,8 +293,8 @@
 }
 
 .device--classic .device__app-icon {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
 }
 
 /* ══════════════════════════════════════════
@@ -308,38 +303,30 @@
    ══════════════════════════════════════════ */
 
 .device--notch .device__frame {
-  width: 180px;
-  height: 370px;
-  border-radius: 38px;
+  width: 224px;
+  height: 460px;
+  border-radius: 48px;
   background: linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 50%, #181818 100%);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.06);
   box-shadow:
-    0 12px 48px rgba(0,0,0,0.4),
-    0 2px 8px rgba(0,0,0,0.2),
-    inset 0 1px 0 rgba(255,255,255,0.1),
-    inset 0 -1px 0 rgba(0,0,0,0.2),
-    inset 1px 0 0 rgba(255,255,255,0.05),
-    inset -1px 0 0 rgba(255,255,255,0.05);
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    inset 0 -1px 0 rgba(0,0,0,0.15);
 }
 
 [data-theme="dark"] .device--notch .device__frame {
   background: linear-gradient(180deg, #e0e0e0 0%, #d0d0d0 50%, #c4c4c4 100%);
-  border-color: rgba(255,255,255,0.4);
+  border-color: rgba(255,255,255,0.3);
   box-shadow:
-    0 12px 48px rgba(0,0,0,0.3),
-    0 2px 8px rgba(0,0,0,0.15),
-    inset 0 1px 0 rgba(255,255,255,0.6),
-    inset 0 -1px 0 rgba(0,0,0,0.08),
-    inset 1px 0 0 rgba(255,255,255,0.3),
-    inset -1px 0 0 rgba(255,255,255,0.3);
+    inset 0 1px 0 rgba(255,255,255,0.4),
+    inset 0 -1px 0 rgba(0,0,0,0.06);
 }
 
 .device--notch .device__screen {
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
-  border-radius: 32px;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  border-radius: 42px;
   background: #000;
   box-shadow: inset 0 0 2px rgba(0,0,0,0.4);
 }
@@ -419,38 +406,30 @@
    ══════════════════════════════════════════ */
 
 .device--flat .device__frame {
-  width: 180px;
-  height: 370px;
-  border-radius: 28px;
+  width: 224px;
+  height: 460px;
+  border-radius: 36px;
   background: linear-gradient(180deg, #262626 0%, #1a1a1a 50%, #141414 100%);
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.04);
   box-shadow:
-    0 12px 48px rgba(0,0,0,0.4),
-    0 2px 8px rgba(0,0,0,0.2),
-    inset 0 1px 0 rgba(255,255,255,0.08),
-    inset 0 -1px 0 rgba(0,0,0,0.3),
-    inset 2px 0 0 rgba(255,255,255,0.04),
-    inset -2px 0 0 rgba(0,0,0,0.1);
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    inset 0 -1px 0 rgba(0,0,0,0.2);
 }
 
 [data-theme="dark"] .device--flat .device__frame {
   background: linear-gradient(180deg, #ddd 0%, #ccc 50%, #c0c0c0 100%);
-  border-color: rgba(255,255,255,0.4);
+  border-color: rgba(255,255,255,0.3);
   box-shadow:
-    0 12px 48px rgba(0,0,0,0.3),
-    0 2px 8px rgba(0,0,0,0.15),
-    inset 0 1px 0 rgba(255,255,255,0.7),
-    inset 0 -1px 0 rgba(0,0,0,0.08),
-    inset 2px 0 0 rgba(255,255,255,0.2),
-    inset -2px 0 0 rgba(0,0,0,0.05);
+    inset 0 1px 0 rgba(255,255,255,0.4),
+    inset 0 -1px 0 rgba(0,0,0,0.06);
 }
 
 .device--flat .device__screen {
-  top: 4px;
-  left: 4px;
-  right: 4px;
-  bottom: 4px;
-  border-radius: 24px;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  border-radius: 31px;
   background: #000;
   box-shadow: inset 0 0 2px rgba(0,0,0,0.4);
 }
@@ -537,38 +516,30 @@
    ══════════════════════════════════════════ */
 
 .device--island .device__frame {
-  width: 180px;
-  height: 370px;
-  border-radius: 28px;
+  width: 224px;
+  height: 460px;
+  border-radius: 36px;
   background: linear-gradient(180deg, #262626 0%, #1a1a1a 50%, #141414 100%);
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.04);
   box-shadow:
-    0 12px 48px rgba(0,0,0,0.4),
-    0 2px 8px rgba(0,0,0,0.2),
-    inset 0 1px 0 rgba(255,255,255,0.08),
-    inset 0 -1px 0 rgba(0,0,0,0.3),
-    inset 2px 0 0 rgba(255,255,255,0.04),
-    inset -2px 0 0 rgba(0,0,0,0.1);
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    inset 0 -1px 0 rgba(0,0,0,0.2);
 }
 
 [data-theme="dark"] .device--island .device__frame {
   background: linear-gradient(180deg, #ddd 0%, #ccc 50%, #c0c0c0 100%);
-  border-color: rgba(255,255,255,0.4);
+  border-color: rgba(255,255,255,0.3);
   box-shadow:
-    0 12px 48px rgba(0,0,0,0.3),
-    0 2px 8px rgba(0,0,0,0.15),
-    inset 0 1px 0 rgba(255,255,255,0.7),
-    inset 0 -1px 0 rgba(0,0,0,0.08),
-    inset 2px 0 0 rgba(255,255,255,0.2),
-    inset -2px 0 0 rgba(0,0,0,0.05);
+    inset 0 1px 0 rgba(255,255,255,0.4),
+    inset 0 -1px 0 rgba(0,0,0,0.06);
 }
 
 .device--island .device__screen {
-  top: 4px;
-  left: 4px;
-  right: 4px;
-  bottom: 4px;
-  border-radius: 24px;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  border-radius: 31px;
   background: #000;
   box-shadow: inset 0 0 2px rgba(0,0,0,0.4);
 }
@@ -667,14 +638,10 @@
   background: linear-gradient(160deg,
     #3a3a3a 0%, #222 15%, #444 30%, #1a1a1a 50%,
     #333 70%, #252525 85%, #3a3a3a 100%) !important;
-  border-color: rgba(255,255,255,0.1) !important;
+  border-color: rgba(255,255,255,0.06) !important;
   box-shadow:
-    0 12px 48px rgba(0,0,0,0.5),
-    0 2px 8px rgba(0,0,0,0.3),
-    inset 0 1px 0 rgba(255,255,255,0.2),
-    inset 0 -1px 0 rgba(0,0,0,0.2),
-    inset 2px 0 0 rgba(255,255,255,0.1),
-    inset -1px 0 0 rgba(0,0,0,0.15) !important;
+    inset 0 1px 0 rgba(255,255,255,0.1),
+    inset 0 -1px 0 rgba(0,0,0,0.15) !important;
 }
 
 .device--steel .device__side-btn--power {
@@ -692,14 +659,10 @@
   background: linear-gradient(160deg,
     #eee 0%, #d8d8d8 15%, #f4f4f4 30%, #ccc 50%,
     #e0e0e0 70%, #d0d0d0 85%, #e8e8e8 100%) !important;
-  border-color: rgba(255,255,255,0.4) !important;
+  border-color: rgba(255,255,255,0.3) !important;
   box-shadow:
-    0 12px 48px rgba(0,0,0,0.3),
-    0 2px 8px rgba(0,0,0,0.15),
-    inset 0 1px 0 rgba(255,255,255,0.9),
-    inset 0 -1px 0 rgba(0,0,0,0.06),
-    inset 2px 0 0 rgba(255,255,255,0.6),
-    inset -1px 0 0 rgba(0,0,0,0.04) !important;
+    inset 0 1px 0 rgba(255,255,255,0.5),
+    inset 0 -1px 0 rgba(0,0,0,0.04) !important;
 }
 
 [data-theme="dark"] .device--steel .device__side-btn--power {
@@ -717,14 +680,10 @@
 .device--titanium .device__frame {
   background: linear-gradient(180deg,
     #3e3a36 0%, #34302c 30%, #2a2622 60%, #322e2a 100%) !important;
-  border-color: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.04) !important;
   box-shadow:
-    0 12px 48px rgba(0,0,0,0.4),
-    0 2px 8px rgba(0,0,0,0.25),
-    inset 0 1px 0 rgba(255,255,255,0.1),
-    inset 0 -1px 0 rgba(0,0,0,0.15),
-    inset 1px 0 0 rgba(255,255,255,0.05),
-    inset -1px 0 0 rgba(0,0,0,0.1) !important;
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    inset 0 -1px 0 rgba(0,0,0,0.1) !important;
 }
 
 .device--titanium .device__side-btn--power {
@@ -741,14 +700,10 @@
 [data-theme="dark"] .device--titanium .device__frame {
   background: linear-gradient(180deg,
     #d2cdc6 0%, #c4bfb7 30%, #b8b3ab 60%, #c0bbb3 100%) !important;
-  border-color: rgba(180,170,160,0.3) !important;
+  border-color: rgba(180,170,160,0.2) !important;
   box-shadow:
-    0 12px 48px rgba(0,0,0,0.25),
-    0 2px 8px rgba(0,0,0,0.12),
-    inset 0 1px 0 rgba(255,255,255,0.35),
-    inset 0 -1px 0 rgba(0,0,0,0.06),
-    inset 1px 0 0 rgba(255,255,255,0.15),
-    inset -1px 0 0 rgba(0,0,0,0.04) !important;
+    inset 0 1px 0 rgba(255,255,255,0.2),
+    inset 0 -1px 0 rgba(0,0,0,0.04) !important;
 }
 
 [data-theme="dark"] .device--titanium .device__side-btn--power {

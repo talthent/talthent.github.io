@@ -8,11 +8,11 @@ const Carousel = (() => {
   let onYearChange = null;
 
   const POSITIONS = {
-    '-2': { x: -480, z: -280, ry: 42, scale: 0.55, opacity: 0.35 },
-    '-1': { x: -240, z: -100, ry: 25, scale: 0.78, opacity: 0.85 },
-    '0':  { x: 0,    z: 0,    ry: 0,  scale: 1.0,  opacity: 1.0  },
-    '1':  { x: 240,  z: -100, ry: -25, scale: 0.78, opacity: 0.85 },
-    '2':  { x: 480,  z: -280, ry: -42, scale: 0.55, opacity: 0.35 }
+    '-2': { x: -580, z: -320, ry: 35, scale: 0.48, opacity: 0.2 },
+    '-1': { x: -300, z: -100, ry: 18, scale: 0.78, opacity: 0.75 },
+    '0':  { x: 0,    z: 0,    ry: 0,  scale: 1.0,  opacity: 1.0 },
+    '1':  { x: 300,  z: -100, ry: -18, scale: 0.78, opacity: 0.75 },
+    '2':  { x: 580,  z: -320, ry: -35, scale: 0.48, opacity: 0.2 }
   };
 
   function init(container, onChange) {
@@ -60,7 +60,7 @@ const Carousel = (() => {
 
       if (Math.abs(relPos) > 2) {
         item.classList.add('hidden');
-        item.style.transform = `translateX(${relPos > 0 ? 600 : -600}px) translateZ(-400px) scale(0.3)`;
+        item.style.transform = `translateX(${relPos > 0 ? 800 : -800}px) translateZ(-500px) scale(0.3)`;
         item.style.opacity = '0';
         return;
       }

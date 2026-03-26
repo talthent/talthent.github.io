@@ -8,11 +8,22 @@
       document.documentElement.setAttribute('data-theme', 'dark');
     }
 
+    const themeColorMeta = document.getElementById('themeColorMeta');
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.style.colorScheme = theme;
+      themeColorMeta.setAttribute('content', theme === 'dark' ? '#000000' : '#ffffff');
+      localStorage.setItem('theme', theme);
+    }
+
+    // Apply initial theme-color
+    const initial = document.documentElement.getAttribute('data-theme');
+    themeColorMeta.setAttribute('content', initial === 'dark' ? '#000000' : '#ffffff');
+
     document.getElementById('themeToggle').addEventListener('click', () => {
       const current = document.documentElement.getAttribute('data-theme');
-      const next = current === 'light' ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
+      applyTheme(current === 'light' ? 'dark' : 'light');
     });
   }
 
@@ -23,7 +34,7 @@
     const data = CAREER_DATA[index];
     document.getElementById('infoRole').textContent = data.role;
     document.getElementById('infoCompany').textContent = data.company;
-    document.getElementById('infoYear').textContent = `${data.year} · ${data.device.model} · iOS ${data.device.ios}`;
+    document.getElementById('infoYear').textContent = `${data.year} \u2014 ${data.device.model}`;
 
     const details = document.getElementById('infoDetails');
     const highlights = document.getElementById('infoHighlights');
@@ -58,7 +69,7 @@
     // Build about content
     content.innerHTML = `
       <div class="about-section">
-        <h3 class="about-section-title">About Me</h3>
+        <h3 class="about-section-title">About</h3>
         <div class="about-text">
           <p>${ABOUT_DATA.intro}</p>
           <p>${ABOUT_DATA.personal}</p>
@@ -70,14 +81,14 @@
         <p>${ABOUT_DATA.contact.location}</p>
         <p><a href="tel:${ABOUT_DATA.contact.phone}">${ABOUT_DATA.contact.phone}</a></p>
         <p><a href="mailto:${ABOUT_DATA.contact.email}">${ABOUT_DATA.contact.email}</a></p>
-        <p><a href="${ABOUT_DATA.contact.linkedin}" target="_blank" rel="noopener">LinkedIn</a> · <a href="${ABOUT_DATA.contact.github}" target="_blank" rel="noopener">GitHub</a></p>
+        <p><a href="${ABOUT_DATA.contact.linkedin}" target="_blank" rel="noopener">LinkedIn</a> &middot; <a href="${ABOUT_DATA.contact.github}" target="_blank" rel="noopener">GitHub</a> &middot; <a href="v1.html">Classic CV</a></p>
       </div>
 
       <div class="about-section">
         <h3 class="about-section-title">Technical Skills</h3>
         ${Object.entries(ABOUT_DATA.skills).map(([category, skills]) => `
-          <div style="margin-bottom: 10px;">
-            <div style="font-size: 0.72rem; font-weight: 600; color: var(--text-muted); margin-bottom: 5px;">${category}</div>
+          <div class="about-skills-category">
+            <div class="about-skills-label">${category}</div>
             <div class="tags">
               ${skills.map(s => `<span class="tag">${s}</span>`).join('')}
             </div>
@@ -93,15 +104,47 @@
       </div>
     `;
 
-    btn.addEventListener('click', () => overlay.classList.add('visible'));
-    closeBtn.addEventListener('click', () => overlay.classList.remove('visible'));
+    let lastFocused = null;
+
+    function openOverlay() {
+      lastFocused = document.activeElement;
+      overlay.classList.add('visible');
+      overlay.setAttribute('aria-hidden', 'false');
+      closeBtn.focus();
+    }
+
+    function closeOverlay() {
+      overlay.classList.remove('visible');
+      overlay.setAttribute('aria-hidden', 'true');
+      if (lastFocused) lastFocused.focus();
+    }
+
+    btn.addEventListener('click', openOverlay);
+    closeBtn.addEventListener('click', closeOverlay);
     overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) overlay.classList.remove('visible');
+      if (e.target === overlay) closeOverlay();
     });
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && overlay.classList.contains('visible')) {
-        overlay.classList.remove('visible');
+      if (!overlay.classList.contains('visible')) return;
+
+      if (e.key === 'Escape') {
+        closeOverlay();
+        return;
+      }
+
+      // Focus trap
+      if (e.key === 'Tab') {
+        const focusable = overlay.querySelectorAll('button, a[href], [tabindex]:not([tabindex="-1"])');
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     });
   }
@@ -132,7 +175,7 @@
   // ── Global wheel on stage area ──
   function initStageWheel() {
     let scrollAccum = 0;
-    const SCROLL_THRESHOLD = 150;
+    const SCROLL_THRESHOLD = 200;
 
     document.querySelector('.stage').addEventListener('wheel', (e) => {
       e.preventDefault();
@@ -166,7 +209,6 @@
       if (!swiping) return;
       const dx = e.touches[0].clientX - touchStartX;
       const dy = e.touches[0].clientY - touchStartY;
-      // Only prevent default if horizontal swipe
       if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
         e.preventDefault();
       }
@@ -205,10 +247,6 @@
       Timeline.update(index);
     });
 
-    // Nav arrows
-    document.getElementById('navLeft').addEventListener('click', () => Carousel.prev());
-    document.getElementById('navRight').addEventListener('click', () => Carousel.next());
-
     // About
     initAbout();
 
@@ -225,6 +263,11 @@
     const startIndex = CAREER_DATA.length - 1;
     updateInfo(startIndex);
     Timeline.update(startIndex);
+
+    // Trigger entrance animations
+    requestAnimationFrame(() => {
+      document.querySelector('.app').classList.add('loaded');
+    });
   }
 
   if (document.readyState === 'loading') {
