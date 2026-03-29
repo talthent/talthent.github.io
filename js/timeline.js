@@ -1,49 +1,50 @@
+/**
+ * Timeline — curved arc timeline with year labels and draggable indicator.
+ *
+ * Subscribes to State for index changes.
+ * Derives year range from State instead of hardcoding.
+ */
 const Timeline = (() => {
-  let svgEl;
-  let arcPath;
-  let container;
-  let inner;
-  let indicatorEl;
+  let svgEl, arcPath, container, inner, indicatorEl;
   let labelEls = [];
   let tickEls = [];
   let yearPoints = [];
-  let onScrub = null;
   let isDragging = false;
   let totalLength = 0;
-  const YEAR_START = 2014;
-  const YEAR_END = 2026;
+
+  const YEAR_START = State.yearStart;
+  const YEAR_END = State.yearEnd;
   const YEAR_COUNT = YEAR_END - YEAR_START;
 
-  function init(containerEl, onChange) {
+  function init(containerEl) {
     container = containerEl;
-    onScrub = onChange;
 
     inner = document.createElement('div');
     inner.className = 'timeline__inner';
     container.appendChild(inner);
 
+    // SVG arc
     svgEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svgEl.setAttribute('viewBox', '0 0 1000 100');
     svgEl.setAttribute('preserveAspectRatio', 'none');
     svgEl.classList.add('timeline__svg');
 
-    const arcD = 'M 30,85 Q 500,10 970,85';
-
     arcPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    arcPath.setAttribute('d', arcD);
+    arcPath.setAttribute('d', 'M 30,85 Q 500,10 970,85');
     arcPath.setAttribute('class', 'timeline__arc');
     svgEl.appendChild(arcPath);
-
     inner.appendChild(svgEl);
 
     totalLength = arcPath.getTotalLength();
 
-    // Create major ticks and labels only (no minor ticks)
+    // Major ticks and labels
     for (let year = YEAR_START; year <= YEAR_END; year++) {
+      const t = (year - YEAR_START) / YEAR_COUNT;
+
       const tick = document.createElement('div');
       tick.className = 'timeline__tick-el timeline__tick-el--major';
       inner.appendChild(tick);
-      tickEls.push({ el: tick, t: (year - YEAR_START) / YEAR_COUNT, major: true });
+      tickEls.push({ el: tick, t, major: true });
 
       const label = document.createElement('div');
       label.className = 'timeline__label-el';
@@ -51,42 +52,33 @@ const Timeline = (() => {
       label.dataset.year = year;
       label.addEventListener('click', (e) => {
         e.stopPropagation();
-        if (onScrub) onScrub(year - YEAR_START);
+        State.goTo(year - YEAR_START);
       });
       inner.appendChild(label);
       labelEls.push(label);
     }
 
-    // Single indicator dot — appended to container so it stays fixed
+    // Fixed indicator dot (child of container, not inner)
     indicatorEl = document.createElement('div');
     indicatorEl.className = 'timeline__dot';
     container.appendChild(indicatorEl);
 
     layoutElements();
+    positionDot();
+
     window.addEventListener('resize', () => {
       layoutElements();
       positionDot();
-      update(Carousel.getCurrentIndex());
+      scrollToIndex(State.getIndex());
     });
 
-    // Interactions
-    container.addEventListener('mousedown', handleStart);
-    container.addEventListener('touchstart', handleStart, { passive: false });
-    window.addEventListener('mousemove', handleMove);
-    window.addEventListener('touchmove', handleMove, { passive: false });
-    window.addEventListener('mouseup', handleEnd);
-    window.addEventListener('touchend', handleEnd);
+    initInteractions();
 
-    container.addEventListener('wheel', (e) => {
-      e.preventDefault();
-      const currentIdx = Carousel.getCurrentIndex();
-      if (e.deltaY > 0 || e.deltaX > 0) {
-        if (onScrub) onScrub(Math.min(currentIdx + 1, YEAR_COUNT));
-      } else {
-        if (onScrub) onScrub(Math.max(currentIdx - 1, 0));
-      }
-    }, { passive: false });
+    // Subscribe to state changes
+    State.subscribe((index) => update(index));
   }
+
+  // ── Geometry helpers ──
 
   function getPointRelativeToInner(t) {
     const svgPt = arcPath.getPointAtLength(t * totalLength);
@@ -108,14 +100,15 @@ const Timeline = (() => {
     return Math.atan2(dy, dx);
   }
 
+  // ── Layout ──
+
   function layoutElements() {
     inner.style.transition = 'none';
     inner.style.transform = 'none';
-    inner.offsetHeight;
+    inner.offsetHeight; // force reflow
 
     yearPoints = [];
 
-    // Position ticks — centered on the arc point
     tickEls.forEach(({ el, t, major }) => {
       const pt = getPointRelativeToInner(t);
       const angle = getTangentAngle(t);
@@ -128,7 +121,6 @@ const Timeline = (() => {
       el.style.transformOrigin = 'center center';
     });
 
-    // Position labels
     labelEls.forEach(label => {
       const year = parseInt(label.dataset.year);
       const t = (year - YEAR_START) / YEAR_COUNT;
@@ -138,12 +130,8 @@ const Timeline = (() => {
       label.style.left = pt.x + 'px';
       label.style.top = (pt.y + 10) + 'px';
       label.style.transform = `translateX(-50%) rotate(${degrees}deg)`;
-
-      yearPoints.push({ x: pt.x, y: pt.y, angle: angle });
+      yearPoints.push({ x: pt.x, y: pt.y, angle });
     });
-
-    // Position indicator at fixed center of container
-    positionDot();
 
     requestAnimationFrame(() => {
       inner.style.transition = '';
@@ -151,25 +139,38 @@ const Timeline = (() => {
   }
 
   function positionDot() {
-    const cx = container.offsetWidth / 2;
-    const cy = container.offsetHeight * 0.4;
-    indicatorEl.style.left = cx + 'px';
-    indicatorEl.style.top = cy + 'px';
+    indicatorEl.style.left = (container.offsetWidth / 2) + 'px';
+    indicatorEl.style.top = (container.offsetHeight * 0.4) + 'px';
   }
 
   function scrollToIndex(index) {
     if (yearPoints.length === 0) return;
-
-    const containerWidth = container.offsetWidth;
-    const containerHeight = container.offsetHeight;
-    const cx = containerWidth / 2;
-    const cy = containerHeight * 0.4;
-
+    const cx = container.offsetWidth / 2;
+    const cy = container.offsetHeight * 0.4;
     const pt = yearPoints[index];
     const angleDeg = pt.angle * (180 / Math.PI);
-
     inner.style.transform =
       `translate(${cx}px, ${cy}px) rotate(${-angleDeg}deg) translate(${-pt.x}px, ${-pt.y}px)`;
+  }
+
+  // ── Interactions ──
+
+  function initInteractions() {
+    container.addEventListener('mousedown', handleStart);
+    container.addEventListener('touchstart', handleStart, { passive: false });
+    window.addEventListener('mousemove', handleMove);
+    window.addEventListener('touchmove', handleMove, { passive: false });
+    window.addEventListener('mouseup', handleEnd);
+    window.addEventListener('touchend', handleEnd);
+
+    container.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      if (e.deltaY > 0 || e.deltaX > 0) {
+        State.goTo(Math.min(State.getIndex() + 1, YEAR_COUNT));
+      } else {
+        State.goTo(Math.max(State.getIndex() - 1, 0));
+      }
+    }, { passive: false });
   }
 
   function handleStart(e) {
@@ -180,34 +181,29 @@ const Timeline = (() => {
   function handleMove(e) {
     if (!isDragging) return;
     e.preventDefault();
-
-    const containerRect = container.getBoundingClientRect();
+    const rect = container.getBoundingClientRect();
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const relX = (clientX - containerRect.left) / containerRect.width;
-
-    const currentIdx = Carousel.getCurrentIndex();
+    const relX = (clientX - rect.left) / rect.width;
+    const currentIdx = State.getIndex();
     const offset = (relX - 0.5) * 6;
     const index = Math.round(Math.max(0, Math.min(YEAR_COUNT, currentIdx + offset)));
-    if (index !== currentIdx && onScrub) onScrub(index);
+    if (index !== currentIdx) State.goTo(index);
   }
 
   function handleEnd() {
     isDragging = false;
   }
 
+  // ── State subscriber ──
+
   function update(index) {
     scrollToIndex(index);
 
     labelEls.forEach(label => {
-      const labelYear = parseInt(label.dataset.year);
-      const yearIndex = labelYear - YEAR_START;
-      if (yearIndex === index) {
-        label.classList.add('timeline__label-el--active');
-      } else {
-        label.classList.remove('timeline__label-el--active');
-      }
+      const yearIndex = parseInt(label.dataset.year) - YEAR_START;
+      label.classList.toggle('timeline__label-el--active', yearIndex === index);
     });
   }
 
-  return { init, update };
+  return { init };
 })();

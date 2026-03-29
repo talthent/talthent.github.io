@@ -5,8 +5,8 @@ const CAREER_DATA = [
     company: 'Life On Air',
     role: 'iOS Developer',
     apps: [
-      { name: 'Yevvo', icon: 'assets/yevvo.png' },
-      { name: 'Meerkat', icon: 'assets/meerkat.png' }
+      { name: 'Yevvo', icon: 'assets/yevvo.png', dock: true },
+      { name: 'Meerkat', icon: 'assets/meerkat.png', dock: true }
     ],
     highlights: [
       'Joined Yevvo mid-project and rewrote major portions of the codebase',
@@ -20,8 +20,8 @@ const CAREER_DATA = [
     company: 'Life On Air',
     role: 'iOS Developer',
     apps: [
-      { name: 'Meerkat', icon: 'assets/meerkat.png' },
-      { name: 'Houseparty', icon: 'assets/houseparty.png' }
+      { name: 'Meerkat', icon: 'assets/meerkat.png', dock: true },
+      { name: 'Houseparty', icon: 'assets/houseparty.png', dock: true }
     ],
     highlights: [
       'Meerkat gained major traction on Twitter\'s social graph',
@@ -35,7 +35,7 @@ const CAREER_DATA = [
     company: 'Life On Air',
     role: 'iOS Developer',
     apps: [
-      { name: 'Houseparty', icon: 'assets/houseparty.png' }
+      { name: 'Houseparty', icon: 'assets/houseparty.png', dock: true }
     ],
     highlights: [
       'Houseparty reached #2 on the overall App Store chart',
@@ -49,7 +49,7 @@ const CAREER_DATA = [
     company: 'Glance Fashion',
     role: 'Senior iOS Developer',
     apps: [
-      { name: 'Glance', icon: 'assets/glance.png' }
+      { name: 'Glance', icon: 'assets/glance.png', dock: true }
     ],
     highlights: [
       'Glance Fashion — social media platform for fashion videos',
@@ -63,7 +63,7 @@ const CAREER_DATA = [
     company: 'Lemonade',
     role: 'Senior iOS Developer',
     apps: [
-      { name: 'Lemonade', icon: 'assets/lemonade.jpg' }
+      { name: 'Lemonade', icon: 'assets/lemonade.jpg', dock: true }
     ],
     highlights: [
       'Joined Lemonade — fast-growing InsurTech reimagining insurance',
@@ -77,7 +77,7 @@ const CAREER_DATA = [
     company: 'Lemonade',
     role: 'Senior iOS Developer',
     apps: [
-      { name: 'Lemonade', icon: 'assets/lemonade.jpg' },
+      { name: 'Lemonade', icon: 'assets/lemonade.jpg', dock: true },
       { name: 'Potluck', icon: 'assets/potluck.jpg' }
     ],
     highlights: [
@@ -92,7 +92,7 @@ const CAREER_DATA = [
     company: 'Lemonade',
     role: 'Senior iOS Developer',
     apps: [
-      { name: 'Lemonade', icon: 'assets/lemonade.jpg' },
+      { name: 'Lemonade', icon: 'assets/lemonade.jpg', dock: true },
       { name: 'Potluck', icon: 'assets/potluck.jpg' }
     ],
     highlights: [
@@ -107,7 +107,7 @@ const CAREER_DATA = [
     company: 'Lemonade',
     role: 'Lead iOS Developer',
     apps: [
-      { name: 'Lemonade', icon: 'assets/lemonade.jpg' },
+      { name: 'Lemonade', icon: 'assets/lemonade.jpg', dock: true },
       { name: 'Potluck', icon: 'assets/potluck.jpg' }
     ],
     highlights: [
@@ -122,7 +122,7 @@ const CAREER_DATA = [
     company: 'Lemonade',
     role: 'Mobile Platform Team Lead',
     apps: [
-      { name: 'Lemonade', icon: 'assets/lemonade.jpg' },
+      { name: 'Lemonade', icon: 'assets/lemonade.jpg', dock: true },
       { name: 'Potluck', icon: 'assets/potluck.jpg' }
     ],
     highlights: [
@@ -137,7 +137,7 @@ const CAREER_DATA = [
     company: 'Lemonade',
     role: 'Engineering Manager',
     apps: [
-      { name: 'Lemonade', icon: 'assets/lemonade.jpg' },
+      { name: 'Lemonade', icon: 'assets/lemonade.jpg', dock: true },
       { name: 'Potluck', icon: 'assets/potluck.jpg' }
     ],
     highlights: [
@@ -152,7 +152,7 @@ const CAREER_DATA = [
     company: 'Lemonade',
     role: 'Engineering Manager',
     apps: [
-      { name: 'Lemonade', icon: 'assets/lemonade.jpg' },
+      { name: 'Lemonade', icon: 'assets/lemonade.jpg', dock: true },
       { name: 'Potluck', icon: 'assets/potluck.jpg' },
       { name: '#memory', icon: 'assets/memory.png' }
     ],
@@ -168,7 +168,7 @@ const CAREER_DATA = [
     company: 'Lemonade',
     role: 'Engineering Manager',
     apps: [
-      { name: 'Lemonade', icon: 'assets/lemonade.jpg' },
+      { name: 'Lemonade', icon: 'assets/lemonade.jpg', dock: true },
       { name: 'Potluck', icon: 'assets/potluck.jpg' },
       { name: '#memory', icon: 'assets/memory.png' }
     ],
@@ -184,7 +184,7 @@ const CAREER_DATA = [
     company: 'Lemonade',
     role: 'Mobile Tech Lead',
     apps: [
-      { name: 'Lemonade', icon: 'assets/lemonade.jpg' },
+      { name: 'Lemonade', icon: 'assets/lemonade.jpg', dock: true },
       { name: 'Potluck', icon: 'assets/potluck.jpg' },
       { name: '#memory', icon: 'assets/memory.png' }
     ],

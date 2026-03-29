@@ -18,7 +18,6 @@
   transform-style: preserve-3d;
   width: 224px;
   height: 480px;
-  margin-left: -120px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -43,16 +42,26 @@
   filter: none;
 }
 
-.carousel__item[data-pos="1"],
+/* Past (left) — visible, slight depth */
 .carousel__item[data-pos="-1"] {
   z-index: 3;
   filter: brightness(0.9) blur(0.5px);
 }
 
-.carousel__item[data-pos="2"],
 .carousel__item[data-pos="-2"] {
   z-index: 1;
   filter: brightness(0.8) blur(1px);
+}
+
+/* Future (right) — behind center, fading out */
+.carousel__item[data-pos="1"] {
+  z-index: 2;
+  pointer-events: none;
+}
+
+.carousel__item[data-pos="2"] {
+  z-index: 1;
+  pointer-events: none;
 }
 
 .carousel__item.hidden {
@@ -66,10 +75,15 @@
     perspective: 1000px;
   }
 
+  .carousel {
+    justify-content: center;
+    padding-left: 0;
+    perspective-origin: center center;
+  }
+
   .carousel__track {
     width: 150px;
     height: 320px;
-    margin-left: 0;
   }
 
   .carousel__item[data-pos="2"],

@@ -214,88 +214,88 @@ body {
   justify-content: center;
   position: relative;
   min-height: 0;
-  padding-left: 0;
-  padding-right: 0;
 }
 
-/* ── Info Card — floating glass panel ── */
-.info-card {
+/* ── CV Panel ── */
+.cv-panel {
   position: absolute;
-  right: 64px;
+  right: 5%;
   top: 50%;
   transform: translateY(-50%);
   z-index: 15;
-  max-width: 280px;
-  width: 280px;
-  padding: 28px 24px;
-  background: var(--overlay-bg);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  transition: opacity 0.4s ease, background var(--transition), border-color var(--transition);
+  left: calc(50% + 220px);
+  width: auto;
+  max-height: 80vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-right: 8px;
 }
 
-.info-role {
-  font-size: 1.1rem;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  color: var(--text);
-  margin-bottom: 4px;
-  transition: color var(--transition);
+/* Scrollbar */
+.cv-panel::-webkit-scrollbar {
+  width: 3px;
+}
+.cv-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+.cv-panel::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
 }
 
-.info-company {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  font-weight: 300;
-  margin-bottom: 4px;
+/* ── Company Block ── */
+.cv-company {
+  opacity: 0.3;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.info-year-label {
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  font-weight: 300;
-  letter-spacing: 0.05em;
-}
-
-.info-details {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
-  opacity: 0;
-}
-
-.info-details.expanded {
-  max-height: 200px;
+.cv-company--active {
   opacity: 1;
 }
 
-.info-details ul {
-  list-style: none;
-  margin-top: 12px;
+.cv-company__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
 }
 
-.info-details ul li {
-  font-size: 0.82rem;
-  color: var(--text-secondary);
-  padding: 4px 0;
-  padding-left: 16px;
-  position: relative;
+.cv-company__icon {
+  border-radius: 7px;
+  object-fit: cover;
+}
+
+.cv-company__name {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.cv-company__years {
+  font-size: 0.65rem;
   font-weight: 300;
-  line-height: 1.5;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
 }
 
-.info-details ul li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: var(--text-muted);
+.cv-company__text {
+  font-size: 0.78rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.cv-company--active .cv-company__text {
+  color: var(--text-secondary);
+}
+
+.cv-company__text strong {
+  font-weight: 500;
+  color: var(--text);
 }
 
 /* ── About Overlay ── */
@@ -458,16 +458,8 @@ body {
     font-size: 0.95rem;
   }
 
-  .info-card {
-    right: auto;
-    left: 50%;
-    top: auto;
-    bottom: 16px;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 320px;
-    padding: 20px;
-    border-radius: 16px;
+  .cv-panel {
+    display: none;
   }
 }
 
