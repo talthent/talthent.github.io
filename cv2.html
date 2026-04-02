@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tal Cohen — Mobile Tech Lead</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --max-width: 960px;
+      --radius: 12px;
+      --transition: 0.3s ease;
+    }
+
+    /* ── Light Theme ── */
+    [data-theme="light"] {
+      --bg: #fafafa;
+      --bg-card: #ffffff;
+      --bg-sidebar: #f3f4f6;
+      --text: #1a1a1a;
+      --text-secondary: #555;
+      --text-muted: #888;
+      --accent: #2563eb;
+      --accent-soft: #dbeafe;
+      --border: #e5e7eb;
+      --tag-bg: #f0f4ff;
+      --tag-text: #2563eb;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-lg: 0 4px 24px rgba(0,0,0,0.08);
+      --toggle-bg: #e5e7eb;
+      --toggle-knob: #fff;
+      --toggle-icon: '☀️';
+    }
+
+    /* ── Dark Theme ── */
+    [data-theme="dark"] {
+      --bg: #0f0f0f;
+      --bg-card: #1a1a1a;
+      --bg-sidebar: #151515;
+      --text: #e5e5e5;
+      --text-secondary: #a3a3a3;
+      --text-muted: #666;
+      --accent: #60a5fa;
+      --accent-soft: #1e3a5f;
+      --border: #2a2a2a;
+      --tag-bg: #1e293b;
+      --tag-text: #93c5fd;
+      --shadow: 0 1px 3px rgba(0,0,0,0.3);
+      --shadow-lg: 0 4px 24px rgba(0,0,0,0.4);
+      --toggle-bg: #333;
+      --toggle-knob: #1a1a1a;
+      --toggle-icon: '🌙';
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background var(--transition), color var(--transition);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Theme Toggle ── */
+    .theme-toggle {
+      width: 56px;
+      height: 30px;
+      background: var(--toggle-bg);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      cursor: pointer;
+      transition: background var(--transition), border-color var(--transition);
+      display: flex;
+      align-items: center;
+      padding: 3px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+
+    .theme-toggle .knob {
+      width: 24px;
+      height: 24px;
+      background: var(--toggle-knob);
+      border-radius: 50%;
+      transition: transform var(--transition), background var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    }
+
+    .theme-toggle .knob::after {
+      content: var(--toggle-icon);
+    }
+
+    [data-theme="dark"] .theme-toggle .knob {
+      transform: translateX(26px);
+    }
+
+    /* ── Layout ── */
+    .page {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── Header ── */
+    .header {
+      margin-bottom: 48px;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .header .subtitle {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      margin-top: 6px;
+      font-weight: 400;
+    }
+
+    .header .subtitle span {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 16px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .contact-row a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity var(--transition);
+    }
+
+    .contact-row a:hover { opacity: 0.7; }
+
+    .contact-row .sep {
+      color: var(--text-muted);
+    }
+
+    /* ── Top Actions ── */
+    .top-actions {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .about-btn {
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition), border-color var(--transition);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+
+    .about-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* ── Overlay ── */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .overlay.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .overlay-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .overlay-panel {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px;
+      max-width: 520px;
+      width: calc(100% - 48px);
+      max-height: calc(100vh - 80px);
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(20px);
+      transition: transform 0.3s ease, background var(--transition), border-color var(--transition);
+    }
+
+    .overlay.is-open .overlay-panel {
+      transform: translateY(0);
+    }
+
+    .overlay-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      transition: color var(--transition), background var(--transition);
+    }
+
+    .overlay-close:hover {
+      color: var(--text);
+      background: var(--border);
+    }
+
+    .overlay-section + .overlay-section {
+      margin-top: 28px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Section ── */
+    .section { margin-bottom: 40px; }
+
+    .section-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Experience Card ── */
+    .exp-card {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 32px;
+    }
+
+    .exp-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      bottom: -20px;
+      width: 2px;
+      background: var(--border);
+      border-radius: 1px;
+    }
+
+    .exp-card:last-child::before {
+      bottom: 8px;
+    }
+
+    .exp-card::after {
+      content: '';
+      position: absolute;
+      left: -3px;
+      top: 8px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .exp-company-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .app-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .app-icon-sm {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      object-fit: cover;
+      flex-shrink: 0;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+
+    .exp-company {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .exp-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-top: 2px;
+    }
+
+    .exp-role {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    .exp-date {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .exp-desc {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .exp-desc ul {
+      list-style: none;
+      margin-top: 6px;
+    }
+
+    .exp-desc ul li {
+      margin-bottom: 4px;
+    }
+
+    /* ── Role Timeline (nested within a company) ── */
+    .role-timeline {
+      margin-top: 12px;
+    }
+
+    .role-item {
+      padding: 8px 0;
+    }
+
+    .role-item + .role-item {
+      border-top: 1px dashed var(--border);
+    }
+
+    /* ── Badge ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 3px 9px;
+      border-radius: 5px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      margin-left: 8px;
+      vertical-align: middle;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    /* ── Sidebar ── */
+    .sidebar .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+      transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .sidebar .card-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    /* ── Tags ── */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      transition: background var(--transition), color var(--transition);
+      white-space: nowrap;
+    }
+
+    /* ── Sidebar List ── */
+    .sidebar-list {
+      list-style: none;
+    }
+
+    .sidebar-list li {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      padding: 4px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .sidebar-list li .icon {
+      flex-shrink: 0;
+      width: 18px;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+
+    /* ── Project Card ── */
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-top: 12px;
+      box-shadow: var(--shadow);
+      transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .project-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .project-card .project-sub {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      margin-bottom: 8px;
+    }
+
+    .project-card p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .project-card .project-tags {
+      margin-top: 10px;
+    }
+
+    /* ── About Me ── */
+    .about-text {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .about-text p + p {
+      margin-top: 10px;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding-top: 40px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Print ── */
+    @media print {
+      .theme-toggle { display: none; }
+      body { background: #fff; color: #000; }
+      .sidebar .card { box-shadow: none; border-color: #ddd; }
+      .project-card { box-shadow: none; border-color: #ddd; }
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 768px) {
+      .header h1 { font-size: 2rem; }
+
+      .top-actions {
+        top: 16px;
+        right: 16px;
+      }
+
+      .page {
+        padding: 32px 16px 60px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-actions">
+    <button class="about-btn" onclick="toggleAbout()">About</button>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+      <span class="knob"></span>
+    </button>
+  </div>
+
+  <div class="page">
+
+    <!-- Header -->
+    <header class="header">
+      <h1>Tal Cohen</h1>
+      <p class="subtitle">Mobile Tech Lead at <span>Lemonade</span></p>
+      <div class="contact-row">
+        <span>Tel Aviv, Israel</span>
+        <span class="sep">·</span>
+        <a href="tel:+972525723333">+972 52 572 3333</a>
+        <span class="sep">·</span>
+        <a href="mailto:talthent@gmail.com">talthent@gmail.com</a>
+        <span class="sep">·</span>
+        <a href="https://www.linkedin.com/in/tal-cohen-ios/" target="_blank" rel="noopener">LinkedIn</a>
+        <span class="sep">·</span>
+        <a href="https://github.com/talthent" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </header>
+
+      <main>
+
+        <!-- Experience -->
+        <section class="section">
+          <h2 class="section-title">Experience</h2>
+
+          <!-- Lemonade -->
+          <div class="exp-card">
+            <div class="exp-company-row">
+              <img src="assets/lemonade.jpg" alt="Lemonade" class="app-icon">
+              <div class="exp-company">Lemonade</div>
+              <span class="badge">IPO 2020</span>
+            </div>
+            <div class="exp-date">2018 — Present · 8+ yrs</div>
+
+            <div class="role-timeline">
+
+              <div class="role-item">
+                <div class="exp-meta">
+                  <span class="exp-role">Mobile Tech Lead</span>
+                  <span class="exp-date">2026 — Present</span>
+                </div>
+                <div class="exp-desc">
+                  <ul>
+                    <li><strong>AI Innovation:</strong> Scaling engineering productivity by integrating Claude Code and Cursor to pioneer AI-assisted development workflows</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="role-item">
+                <div class="exp-meta">
+                  <span class="exp-role">Engineering Manager</span>
+                  <span class="exp-date">Client & Experience · 2023 — 2026</span>
+                </div>
+                <div class="exp-desc">
+                  <ul>
+                    <li><strong>Org Efficiency:</strong> Led a multidisciplinary (Mobile/Web/BE) team; transitioned from mobile-centric to a high-impact Client & Experience organization</li>
+                    <li><strong>Unified Strategy:</strong> Architected a cross-platform chat solution, slashing redundant development and unifying global product lines</li>
+                    <li><strong>Operational Excellence:</strong> Automated end-to-end UI testing, significantly increasing release velocity and reducing manual QA overhead</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="role-item">
+                <div class="exp-meta">
+                  <span class="exp-role">Founding iOS Dev → Mobile Team Lead</span>
+                  <span class="exp-date">2018 — 2023</span>
+                </div>
+                <div class="exp-desc">
+                  <ul>
+                    <li><strong>Core Build:</strong> Co-built the initial Lemonade app and the AI-driven chat engine for global onboarding and claims</li>
+                    <li><strong>Global Scaling:</strong> Architected the platform for multi-currency/language support across the US and Europe</li>
+                    <li><strong>Leadership:</strong> Scaled the mobile org from 2 to 12 engineers; founded the Mobile Guild to standardize DX and performance</li>
+                    <li><strong>Platform Evolution:</strong> Overhauled mobile architecture to support squad-based scaling and rigorous automation</li>
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Glance -->
+          <div class="exp-card">
+            <div class="exp-company-row">
+              <img src="assets/glance.png" alt="Glance Fashion" class="app-icon">
+              <div class="exp-company">Glance Fashion</div>
+            </div>
+            <div class="exp-meta">
+              <span class="exp-role">Senior iOS Developer</span>
+              <span class="exp-date">Mar 2017 — Dec 2017</span>
+            </div>
+            <div class="exp-desc">
+              <p>Social media platform for creating, editing, sharing and discovering fashion videos.</p>
+            </div>
+          </div>
+
+          <!-- Life On Air -->
+          <div class="exp-card">
+            <div class="exp-company">Life On Air <span class="badge">Acquired by Epic Games 2019</span></div>
+
+            <div class="exp-meta">
+              <span class="exp-role">iOS Developer</span>
+              <span class="exp-date">May 2014 — Nov 2016</span>
+            </div>
+            <div class="exp-desc">
+              <p>Part of a small, high-caliber team building social apps around live video.</p>
+              <ul>
+                <li><img src="assets/houseparty.png" alt="Houseparty" class="app-icon-sm"><strong>Houseparty</strong> — Built the entire app from scratch. End-to-end architecture and product design. Integrated real-time messaging and WebRTC live video. Reached #2 on the overall App Store chart</li>
+                <li><img src="assets/meerkat.png" alt="Meerkat" class="app-icon-sm"><strong>Meerkat</strong> — Live broadcast app on Twitter's social graph that gained massive traction</li>
+                <li><img src="assets/yevvo.png" alt="Yevvo" class="app-icon-sm"><strong>Yevvo</strong> — Joined mid-project and rewrote major portions of the codebase</li>
+              </ul>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- Side Projects -->
+        <section class="section">
+          <h2 class="section-title">Side Projects</h2>
+
+          <div class="project-card" style="margin-bottom: 16px;">
+            <div class="exp-company-row" style="margin-bottom: 4px;">
+              <img src="assets/memory.png" alt="#memory" class="app-icon">
+              <h3>#memory</h3>
+            </div>
+            <div class="project-sub">Dec 2016 — Mar 2017</div>
+            <p>Helped build a brain extension note-taking app for macOS and iOS. Built the macOS app and performed code review for the iOS app.</p>
+            <div class="tags project-tags">
+              <span class="tag">macOS</span>
+              <span class="tag">iOS</span>
+              <span class="tag">Cocoa</span>
+            </div>
+          </div>
+          <div class="project-card">
+            <div class="exp-company-row" style="margin-bottom: 4px;">
+              <img src="assets/potluck.jpg" alt="Potluck Recipes" class="app-icon">
+              <h3>Potluck Recipes</h3>
+            </div>
+            <div class="project-sub">Co-Founded with my wife · Oct 2019 — Present</div>
+            <p>A cookbook app to keep and share favorite family recipes. Started as a React Native project, migrated to native Swift, and later completely rewritten in VueJS + Ionic for full cross-platform support.</p>
+            <div class="tags project-tags">
+              <span class="tag">VueJS</span>
+              <span class="tag">Ionic</span>
+              <span class="tag">Swift</span>
+              <span class="tag">React Native</span>
+              <span class="tag">Cross-Platform</span>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+    <footer class="footer">
+      <p>Built with care & attention to detail</p>
+    </footer>
+
+  </div>
+
+  <!-- About Overlay -->
+  <div class="overlay" id="aboutOverlay" role="dialog" aria-modal="true" aria-label="About">
+    <div class="overlay-backdrop" onclick="toggleAbout()"></div>
+    <div class="overlay-panel">
+      <button class="overlay-close" onclick="toggleAbout()" aria-label="Close">&times;</button>
+
+      <div class="overlay-section">
+        <h3 class="card-title">About Me</h3>
+        <div class="about-text">
+          <p>I love working on products that obsess over tiny details — really thinking about what the user feels at every interaction.</p>
+          <p>Outside of work I'm a pianist who performs every once in a while, a swimmer, working on my silversmith skills, and a foodie when time allows. Married to Shani, father of two.</p>
+        </div>
+      </div>
+
+      <div class="overlay-section">
+        <h3 class="card-title">Technical Skills</h3>
+
+        <div style="margin-bottom: 12px;">
+          <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted); margin-bottom: 6px;">Frameworks & Architecture</div>
+          <div class="tags">
+            <span class="tag">SwiftUI</span>
+            <span class="tag">TCA</span>
+            <span class="tag">Combine</span>
+            <span class="tag">UIKit</span>
+            <span class="tag">Swift Concurrency</span>
+            <span class="tag">SPM Modular Arch</span>
+            <span class="tag">Ionic Capacitor</span>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted); margin-bottom: 6px;">Testing</div>
+          <div class="tags">
+            <span class="tag">XCTest</span>
+            <span class="tag">Snapshot Testing</span>
+            <span class="tag">UI Testing</span>
+            <span class="tag">OCR-based WebView Testing</span>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted); margin-bottom: 6px;">Tools & CI/CD</div>
+          <div class="tags">
+            <span class="tag">Fastlane</span>
+            <span class="tag">GitHub Actions</span>
+            <span class="tag">Xcode Cloud</span>
+            <span class="tag">Custom CI Scripts</span>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted); margin-bottom: 6px;">AI-Assisted Development</div>
+          <div class="tags">
+            <span class="tag">Claude Code</span>
+            <span class="tag">Cursor</span>
+            <span class="tag">MCP Integrations</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="overlay-section">
+        <h3 class="card-title">Personal</h3>
+        <ul class="sidebar-list">
+          <li><span class="icon">🎹</span> Pianist & performer</li>
+          <li><span class="icon">🏊</span> Swimming</li>
+          <li><span class="icon">🔨</span> Silversmithing</li>
+          <li><span class="icon">🍽</span> Foodie</li>
+          <li><span class="icon">🎵</span> Military band commander</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function toggleAbout() {
+      document.getElementById('aboutOverlay').classList.toggle('is-open');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.getElementById('aboutOverlay').classList.remove('is-open');
+      }
+    });
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+
+    // Restore saved preference or match system
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+
+</body>
+</html>
