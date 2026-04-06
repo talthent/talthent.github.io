@@ -340,8 +340,8 @@
       .card { box-shadow: none; border-color: #ddd; break-inside: avoid; }
       .badge { border: 1px solid #ccc; background: #f5f5f5; color: #333; }
     }
-    @media (max-width: 900px) { .device-panel { display: none; } header > div:first-child { flex-direction: column; gap: 4px; } }
-    @media (max-width: 600px) { .app { padding: 0 16px; } .cv { width: 100%; } .contact { font-size: 0.7rem; gap: 8px; } .timeline { height: 56px; } }
+    @media (max-width: 900px) { .device-panel { display: none; } header > div:first-child { flex-direction: column; gap: 4px; } #deviceToggle, #wpToggle { display: none; } }
+    @media (max-width: 600px) { .app { padding: 0 16px; } .cv { width: 100%; } .contact { font-size: 0.7rem; gap: 8px; } .timeline { height: 96px; } .tl-svg { left: 16px; right: 16px; width: calc(100% - 32px); } }
 
     button, a, .timeline, .device { touch-action: manipulation; }
     .timeline { user-select: none; -webkit-user-select: none; }
