@@ -1,68 +1,802 @@
+<!--
+  ╔══════════════════════════════════════════════════════════╗
+  ║                                                          ║
+  ║   Hey, you're looking at the source — nice.              ║
+  ║                                                          ║
+  ║   Tal Cohen                                              ║
+  ║   Mobile Tech Lead · Tel Aviv                            ║
+  ║                                                          ║
+  ║   talthent@gmail.com                                     ║
+  ║   +972 52 572 3333                                       ║
+  ║   linkedin.com/in/tal-cohen-ios                          ║
+  ║   github.com/talthent                                    ║
+  ║   instagram.com/talthent                                 ║
+  ║                                                          ║
+  ╚══════════════════════════════════════════════════════════╝
+-->
 <!DOCTYPE html>
 <html lang="en" data-theme="light" style="color-scheme: light dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Tal Cohen — Mobile Tech Lead</title>
-  <meta name="description" content="Tal Cohen — Mobile Tech Lead at Lemonade. 8+ years of iOS development through every iPhone generation.">
-  <meta property="og:title" content="Tal Cohen — Mobile Tech Lead">
-  <meta property="og:description" content="8+ years of iOS development through every iPhone generation. From Houseparty to Lemonade.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://talthent.github.io">
+  <meta name="description" content="Tal Cohen — Mobile Tech Lead at Lemonade. 12+ years of iOS development through every iPhone generation.">
   <meta name="theme-color" content="#ffffff" id="themeColorMeta">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📱</text></svg>">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/devices.css">
-  <link rel="stylesheet" href="css/carousel.css">
-  <link rel="stylesheet" href="css/timeline.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --t: 0.3s ease;
+      --spring: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="light"] {
+      --bg: #fafafa; --card: #fff; --text: #1a1a1a; --dim: #555; --muted: #888;
+      --accent: #2563eb; --accent-soft: #dbeafe; --border: #e5e7eb;
+      --tag-bg: #f0f4ff; --tag-text: #2563eb;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f0f0f; --card: #1a1a1a; --text: #e5e5e5; --dim: #a3a3a3; --muted: #666;
+      --accent: #60a5fa; --accent-soft: #1e3a5f; --border: #2a2a2a;
+      --tag-bg: #1e293b; --tag-text: #93c5fd;
+      --shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    html, body { height: 100%; background: var(--bg); }
+    body {
+      font-family: var(--sans); color: var(--text); line-height: 1.6;
+      transition: background var(--t), color var(--t);
+      -webkit-font-smoothing: antialiased; overflow: hidden;
+    }
+
+    /* Layout */
+    .app {
+      display: flex; flex-direction: column;
+      height: 100vh; height: 100dvh;
+      overflow: hidden; padding: 0 40px;
+    }
+
+    .app > * { opacity: 0; }
+    .app.loaded > header { animation: fadeIn 1s ease forwards; }
+    .app.loaded > .stage { animation: fadeIn 1.2s ease 0.2s forwards; }
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    /* Header */
+    header {
+      z-index: 10; padding: 20px 0; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    header h1 { font-size: 1.1rem; font-weight: 600; letter-spacing: -0.02em; white-space: nowrap; }
+
+    .header-info {
+      display: flex; align-items: baseline; gap: 16px;
+      opacity: 0; transform: translateY(-8px);
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+    }
+    .header-info.visible {
+      opacity: 1; transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .contact {
+      display: flex; flex-wrap: wrap; gap: 12px; margin-left: 16px;
+      font-size: 0.78rem; color: var(--muted); align-items: baseline;
+    }
+    .contact a, .hero-contact a { color: var(--dim); text-decoration: none; transition: color var(--t); display: inline-flex; align-items: center; }
+    .contact a:hover, .hero-contact a:hover { color: var(--accent); }
+    .contact a i { font-size: 14px; }
+    .contact a .fa-solid { font-size: 12px; }
+    .contact .sep { color: var(--border); }
+
+    .actions { display: flex; align-items: center; gap: 10px; }
+
+    .btn-pdf {
+      padding: 5px 14px; border-radius: 980px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--dim); font-family: var(--sans); font-size: 0.78rem; font-weight: 500;
+      cursor: pointer; transition: border-color var(--t), color var(--t);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .btn-pdf:hover { border-color: var(--accent); color: var(--accent); }
+
+    .btn-round {
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 1px solid var(--border); background: transparent;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      color: var(--muted); position: relative;
+      transition: border-color var(--t), color var(--t), background var(--t);
+    }
+    .btn-round:hover { border-color: var(--dim); color: var(--dim); }
+    .btn-round.active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+
+    .btn-about {
+      padding: 5px 14px; border-radius: 980px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--dim); font-family: var(--sans); font-size: 0.78rem; font-weight: 500;
+      cursor: pointer; transition: border-color var(--t), color var(--t);
+    }
+    .btn-about:hover { border-color: var(--accent); color: var(--accent); }
+
+    .theme-toggle {
+      width: 52px; height: 28px; border-radius: 14px;
+      border: 1px solid var(--border); background: var(--border);
+      cursor: pointer; display: flex; align-items: center; padding: 2px;
+      transition: background var(--t), border-color var(--t);
+    }
+    .theme-toggle .knob {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--bg); display: flex; align-items: center; justify-content: center;
+      font-size: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+      transition: transform var(--t), background var(--t);
+    }
+    .theme-toggle .knob::after { content: '\2600\FE0F'; }
+    [data-theme="dark"] .theme-toggle .knob { transform: translateX(24px); }
+    [data-theme="dark"] .theme-toggle .knob::after { content: '\1F319'; }
+
+    /* Stage */
+    .stage { flex: 1; display: flex; min-height: 0; position: relative; justify-content: center; gap: 60px; }
+    .stage::after {
+      content: ''; position: absolute; left: -40px; right: -40px; bottom: 0; height: 200px;
+      background: linear-gradient(to top, var(--bg) 40%, transparent);
+      pointer-events: none; z-index: 1;
+    }
+
+    /* CV scroll */
+    .cv {
+      width: 680px; flex-shrink: 0; overflow-y: auto; overscroll-behavior: contain;
+      padding: 0 0 140px 6px;
+      scrollbar-width: none;
+    }
+    .cv::-webkit-scrollbar { display: none; }
+
+.device-panel {
+      width: 360px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      overflow: visible; z-index: 5; padding: 20px 0 140px;
+      transition: opacity 0.4s, width 0.6s var(--spring);
+    }
+    .collapsed .device-panel { opacity: 0; pointer-events: none; width: 0; }
+
+    /* Hero */
+    .hero {
+      padding: 40px 0 32px;
+    }
+    .hero-name {
+      font-size: 2.4rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1;
+    }
+    .hero-title {
+      font-size: 1rem; color: var(--dim); font-weight: 400; margin-top: 6px;
+    }
+    .hero-contact {
+      display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px;
+      font-size: 0.82rem; color: var(--muted);
+    }
+    .hero-contact a i { font-size: 18px; }
+    .hero-contact a .fa-solid { font-size: 15px; }
+    .hero-contact .sep { color: var(--border); }
+
+    /* CV content */
+    .section { margin-bottom: 32px; }
+    .section h2 {
+      font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--accent); margin-bottom: 18px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section h2::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .job {
+      position: relative; padding-left: 18px; margin-bottom: 28px;
+    }
+    .job::before {
+      content: ''; position: absolute; left: 0; top: 8px; bottom: -16px;
+      width: 2px; background: var(--border);
+    }
+    .job:last-child::before { bottom: 8px; }
+    .job::after {
+      content: ''; position: absolute; left: -3px; top: 8px;
+      width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+    }
+
+.row { display: flex; align-items: center; gap: 8px; }
+
+    .icon-32 { width: 32px; height: 32px; border-radius: 7px; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .icon-20 { width: 20px; height: 20px; border-radius: 5px; object-fit: cover; vertical-align: middle; margin-right: 3px; }
+
+    .company { font-size: 1rem; font-weight: 600; }
+
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 2px; }
+    .role { font-size: 0.88rem; font-weight: 500; color: var(--accent); }
+    .date { font-size: 0.75rem; color: var(--muted); font-family: var(--mono); }
+
+    .desc { margin-top: 6px; font-size: 0.84rem; color: var(--dim); line-height: 1.7; }
+    .desc ul { list-style: none; margin-top: 4px; }
+    .desc li { margin-bottom: 3px; }
+
+    .roles { margin-top: 10px; }
+    .roles > div { padding: 6px 0; }
+    .roles > div + div { border-top: 1px dashed var(--border); }
+
+    .badge {
+      display: inline-flex; font-size: 0.66rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.04em;
+      padding: 2px 8px; border-radius: 5px;
+      background: var(--accent-soft); color: var(--accent);
+      margin-left: 6px; vertical-align: middle;
+      transition: background var(--t), color var(--t);
+    }
+
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px; margin-top: 10px;
+      box-shadow: var(--shadow); transition: background var(--t), border-color var(--t);
+    }
+    .card h3 { font-size: 0.92rem; font-weight: 600; margin-bottom: 2px; }
+    .card .sub { font-size: 0.75rem; color: var(--muted); font-family: var(--mono); margin-bottom: 6px; }
+    .card p { font-size: 0.84rem; color: var(--dim); line-height: 1.6; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+    .tag {
+      font-size: 0.72rem; font-weight: 500; padding: 3px 9px; border-radius: 5px;
+      background: var(--tag-bg); color: var(--tag-text);
+      transition: background var(--t), color var(--t); white-space: nowrap;
+    }
+
+    .footer {
+      text-align: center; padding: 32px 0 24px;
+      font-size: 0.68rem; font-weight: 400; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--muted);
+    }
+
+    /* Device */
+    .device { position: relative; flex-shrink: 0; cursor: default; transform-origin: center; }
+    .device__frame { position: relative; overflow: hidden; width: var(--frame-w); height: var(--frame-h); border-radius: var(--frame-r); transition: width 0.7s var(--spring), height 0.7s var(--spring), border-radius 0.5s var(--spring), background 0.4s, border-color 0.4s; }
+    .device__screen { position: absolute; overflow: hidden; display: flex; flex-direction: column; z-index: 1; top: var(--screen-top); left: var(--screen-side); right: var(--screen-side); bottom: var(--screen-bottom); border-radius: var(--screen-r); background: #000; transition: top 0.7s var(--spring), left 0.7s var(--spring), right 0.7s var(--spring), bottom 0.7s var(--spring), border-radius 0.5s var(--spring); }
+    .device__wp { position: absolute; inset: 0; background-size: cover; background-position: center; transition: opacity 0.5s; }
+    .device__bar { position: relative; z-index: 2; height: 20px; display: flex; align-items: flex-end; justify-content: space-between; padding: 0 12px; font-size: 7px; font-weight: 600; color: #fff; text-shadow: 0 0.5px 1px rgba(0,0,0,0.3); }
+    .device__bar span { display: flex; align-items: flex-end; gap: 3px; }
+    .device__grid { position: relative; z-index: 1; flex: 1; }
+    .device__app { position: absolute; display: flex; flex-direction: column; align-items: center; gap: 3px; transition: left 0.5s var(--spring), top 0.5s var(--spring), transform 0.5s var(--spring), opacity 0.5s var(--spring); }
+    .device__app.entering { opacity: 0; transform: scale(0.3); }
+    .device__app.leaving { opacity: 0; transform: scale(0.3); pointer-events: none; }
+    .device__app img { width: 40px; height: 40px; border-radius: 22%; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+    .device__app span { font-size: 7px; color: #fff; text-shadow: 0 0.5px 2px rgba(0,0,0,0.5); text-align: center; max-width: 44px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .device__dock { position: absolute; z-index: 3; bottom: 0; left: 0; right: 0; height: 80px; background: rgba(255,255,255,0.15); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid rgba(255,255,255,0.1); border-radius: 0 0 var(--screen-r) var(--screen-r); transition: border-radius 0.5s var(--spring); }
+    .device__dock span { font-size: 6px; }
+    .device__indicator { position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); width: 36%; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.5); z-index: 3; transition: opacity 0.4s; }
+    .device__home { position: absolute; bottom: 13px; left: 50%; transform: translateX(-50%); width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.1); background: linear-gradient(180deg, #222, #1a1a1a); box-shadow: 0 1px 2px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.08); z-index: 5; transition: opacity 0.4s; }
+    .device__home::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 22px; height: 22px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); }
+    [data-theme="dark"] .device__home { border-color: rgba(0,0,0,0.15); background: linear-gradient(180deg, #d0d0d0, #b8b8b8); }
+    [data-theme="dark"] .device__home::after { border-color: rgba(0,0,0,0.12); }
+    .device__notch { position: absolute; top: var(--screen-top); left: 50%; transform: translateX(-50%); width: var(--notch-w); height: var(--notch-h); background: #0a0a0a; border-radius: 0 0 8px 8px; z-index: 5; transition: opacity 0.4s, width 0.5s var(--spring), height 0.5s var(--spring), top 0.7s var(--spring); }
+    .device__notch::after { content: ''; position: absolute; top: 4px; right: 14px; width: 4px; height: 4px; border-radius: 50%; background: radial-gradient(circle, #1a1a2e 30%, #0d0d1a 70%); box-shadow: 0 0 0 1px rgba(40,40,60,0.5); }
+    .device__island { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); width: var(--island-w); height: var(--island-h); background: #0a0a0a; border-radius: 50px; z-index: 5; transition: opacity 0.4s, width 0.5s var(--spring), height 0.5s var(--spring); }
+    .device__island::after { content: ''; position: absolute; top: 50%; right: 10px; transform: translateY(-50%); width: 5px; height: 5px; border-radius: 50%; background: radial-gradient(circle, #1a1a2e 30%, #0d0d1a 70%); box-shadow: 0 0 0 1px rgba(40,40,60,0.4); }
+    .device__side { position: absolute; z-index: 6; border-radius: 2px; transition: background 0.3s; }
+    .device__side.power { right: -3px; top: 100px; height: 36px; width: 3px; border-radius: 0 2px 2px 0; background: linear-gradient(90deg, #1a1a1a, #2a2a2a, #1a1a1a); }
+    .device__side.vol-up { left: -3px; top: 90px; height: 24px; width: 3px; border-radius: 2px 0 0 2px; background: linear-gradient(270deg, #1a1a1a, #2a2a2a, #1a1a1a); }
+    .device__side.vol-down { left: -3px; top: 120px; height: 24px; width: 3px; border-radius: 2px 0 0 2px; background: linear-gradient(270deg, #1a1a1a, #2a2a2a, #1a1a1a); }
+    .device__side.silent { left: -3px; top: 70px; width: 3px; height: 10px; border-radius: 2px 0 0 2px; background: linear-gradient(270deg, #1a1a1a, #2a2a2a, #1a1a1a); }
+    [data-theme="dark"] .device__side.power { background: linear-gradient(90deg, #bbb, #d5d5d5, #bbb); }
+    [data-theme="dark"] .device__side.vol-up, [data-theme="dark"] .device__side.vol-down, [data-theme="dark"] .device__side.silent { background: linear-gradient(270deg, #bbb, #d5d5d5, #bbb); }
+
+    .device--classic .device__frame { background: linear-gradient(180deg, #2a2a2a, #1e1e1e, #181818); border: 1px solid rgba(255,255,255,0.06); }
+    [data-theme="dark"] .device--classic .device__frame { background: linear-gradient(180deg, #e8e8e8, #d8d8d8, #ccc); border-color: rgba(255,255,255,0.3); }
+    .device--notch .device__frame { background: linear-gradient(180deg, #2a2a2a, #1e1e1e, #181818); border: 1px solid rgba(255,255,255,0.06); }
+    [data-theme="dark"] .device--notch .device__frame { background: linear-gradient(180deg, #e0e0e0, #d0d0d0, #c4c4c4); border-color: rgba(255,255,255,0.3); }
+    .device--flat .device__frame { background: linear-gradient(180deg, #262626, #1a1a1a, #141414); border: 1px solid rgba(255,255,255,0.04); }
+    [data-theme="dark"] .device--flat .device__frame { background: linear-gradient(180deg, #ddd, #ccc, #c0c0c0); border-color: rgba(255,255,255,0.3); }
+    .device--island .device__frame { background: linear-gradient(180deg, #262626, #1a1a1a, #141414); border: 1px solid rgba(255,255,255,0.04); }
+    [data-theme="dark"] .device--island .device__frame { background: linear-gradient(180deg, #ddd, #ccc, #c0c0c0); border-color: rgba(255,255,255,0.3); }
+    .device--steel .device__frame { background: linear-gradient(160deg, #3a3a3a, #222, #444, #1a1a1a, #333, #252525, #3a3a3a) !important; }
+    [data-theme="dark"] .device--steel .device__frame { background: linear-gradient(160deg, #eee, #d8d8d8, #f4f4f4, #ccc, #e0e0e0, #d0d0d0, #e8e8e8) !important; }
+    .device--titanium .device__frame { background: linear-gradient(180deg, #3e3a36, #34302c, #2a2622, #322e2a) !important; }
+    [data-theme="dark"] .device--titanium .device__frame { background: linear-gradient(180deg, #d2cdc6, #c4bfb7, #b8b3ab, #c0bbb3) !important; }
+    .device__caption { text-align: center; margin-top: 10px; font-size: 0.65rem; font-weight: 300; letter-spacing: 0.03em; color: var(--muted); }
+
+    /* Timeline */
+    .timeline {
+      position: absolute; bottom: 0; left: -40px; right: -40px; height: 100px; z-index: 2;
+      padding: 0 40px;
+      cursor: pointer; user-select: none; -webkit-user-select: none; overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+    }
+    .tl-inner { position: absolute; inset: 0; transform-origin: 0 0; transition: transform 0.8s var(--spring); will-change: transform; }
+    .tl-svg { position: absolute; bottom: 10px; left: 40px; right: 40px; width: calc(100% - 80px); height: 70px; overflow: visible; }
+    .tl-arc { fill: none; stroke: var(--border); stroke-width: 0.5; transition: stroke var(--t); }
+    .tl-tick { position: absolute; height: 1px; background: var(--muted); opacity: 0.8; pointer-events: none; }
+    .tl-year { position: absolute; font-family: var(--sans); font-size: 9px; font-weight: 300; letter-spacing: 0.04em; color: var(--muted); cursor: pointer; transition: color 0.6s var(--spring), font-weight 0.6s var(--spring); white-space: nowrap; }
+    .tl-year.active { color: var(--text); font-weight: 500; }
+    .tl-dot { position: absolute; z-index: 10; border-radius: 50%; width: 7px; height: 7px; transform: translate(-50%,-50%); background: var(--text); box-shadow: 0 0 6px 2px rgba(128,128,128,0.2), 0 0 14px 4px rgba(128,128,128,0.2); cursor: grab; transition: background var(--t); }
+    .tl-dot:active { cursor: grabbing; }
+
+    .print-only { display: none; }
+
+
+    /* Print & responsive */
+    @media print {
+      .actions, .device-panel, .timeline, .footer, .stage::after, header, .screen-only { display: none; }
+      .print-only { display: block; }
+      body { background: #fff; color: #000; overflow: visible; height: auto; }
+      .app { height: auto; overflow: visible; padding: 0; }
+      .stage { display: block; gap: 0; }
+      .cv { width: 100%; overflow: visible; padding: 0 20px; height: auto; }
+      .hero { padding-top: 20px; }
+      .hero-name { font-size: 2rem; }
+      .hero-contact { font-size: 0.85rem; color: #555; margin-top: 8px; }
+      .section { break-inside: avoid; }
+      .job { break-inside: avoid; }
+      .card { box-shadow: none; border-color: #ddd; break-inside: avoid; }
+      .badge { border: 1px solid #ccc; background: #f5f5f5; color: #333; }
+    }
+    @media (max-width: 900px) { .device-panel { display: none; } header > div:first-child { flex-direction: column; gap: 4px; } }
+    @media (max-width: 600px) { .app { padding: 0 16px; } .cv { width: 100%; } .contact { font-size: 0.7rem; gap: 8px; } .timeline { height: 56px; } }
+
+    button, a, .timeline, .device { touch-action: manipulation; }
+    .timeline { user-select: none; -webkit-user-select: none; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+  </style>
 </head>
 <body>
-  <a href="#carousel" class="skip-link">Skip to content</a>
-
   <div class="app">
-
-    <!-- Header -->
-    <header class="header">
-      <h1>Tal Cohen</h1>
-      <div class="header-actions">
-        <button class="about-btn" id="aboutBtn">About</button>
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"></button>
+    <header>
+      <div class="header-info" id="headerInfo">
+        <h1>Tal Cohen</h1>
+        <div class="contact">
+          <a href="tel:+972525723333" aria-label="Phone"><i class="fa-solid fa-phone"></i></a>
+          <a href="mailto:talthent@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+          <a href="https://www.linkedin.com/in/tal-cohen-ios/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="https://github.com/talthent" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+          <a href="https://www.instagram.com/talthent" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="btn-round" href="assets/Tal_Cohen_CV.pdf" download="Tal Cohen - CV.pdf" aria-label="Download PDF">
+          <i class="fa-solid fa-download" style="font-size:12px"></i>
+        </a>
+        <span style="width:1px;height:16px;background:var(--border);margin:0 2px"></span>
+        <button class="btn-round active" id="deviceToggle" aria-label="Toggle device">
+          <i class="fa-solid fa-mobile-screen" style="font-size:13px"></i>
+        </button>
+        <button class="btn-round" id="wpToggle" aria-label="Toggle wallpaper">
+          <i class="fa-solid fa-image" style="font-size:12px"></i>
+        </button>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="knob"></span>
+        </button>
       </div>
     </header>
 
-    <!-- Main Stage -->
     <div class="stage">
-      <div class="carousel" id="carousel" role="region" aria-label="Career timeline carousel"></div>
+      <div class="cv" id="cv">
+        <div class="hero" id="hero">
+          <h2 class="hero-name">Tal Cohen</h2>
+          <p class="hero-title">Mobile Tech Lead · Tel Aviv</p>
+          <div class="hero-contact screen-only">
+            <a href="tel:+972525723333" aria-label="Phone"><i class="fa-solid fa-phone"></i></a>
+            <a href="mailto:talthent@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+            <a href="https://www.linkedin.com/in/tal-cohen-ios/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="https://github.com/talthent" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="https://www.instagram.com/talthent" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          </div>
+          <div class="hero-contact print-only">
+            +972 52 572 3333 · talthent@gmail.com
+          </div>
+        </div>
 
-      <!-- CV panel — right side -->
-      <div class="cv-panel" id="cvPanel"></div>
+        <section class="section">
+          <h2>About</h2>
+          <div class="desc" style="margin-bottom:16px">
+            <p>I'm Tal, a self-taught developer from Tel Aviv, 12 years deep into building apps for Apple platforms. I care about how software feels — the small moments of delight when an interaction just works. That's what got me into this, and it's what still gets me up in the morning.</p>
+            <p style="margin-top:8px">Outside of code, I've been playing piano since I was five and still hit the stage every now and then. I love food — and lately, making it too. I swim, and about a year ago I picked up silversmithing. Married to Shani, father to Ariel and Eden.</p>
+          </div>
+        </section>
+
+        <section class="section" id="expSection">
+          <h2>Experience</h2>
+
+          <div class="job">
+            <div class="row">
+              <img src="assets/lemonade.jpg" alt="Lemonade" class="icon-32">
+              <span class="company">Lemonade</span>
+              <span class="badge">IPO 2020</span>
+              <span class="badge">&#9733; 4.9</span>
+            </div>
+            <span class="date">2018 — Present · 8+ yrs</span>
+            <div class="roles">
+              <div>
+                <div class="meta"><span class="role">Mobile Tech Lead</span><span class="date">2026 — Present</span></div>
+                <div class="desc"><ul><li><strong>AI Innovation:</strong> Scaling engineering productivity by integrating Claude Code and Cursor to pioneer AI-assisted development workflows</li></ul></div>
+              </div>
+              <div>
+                <div class="meta"><span class="role">Engineering Manager</span><span class="date">Client & Experience · 2023 — 2026</span></div>
+                <div class="desc"><ul>
+                  <li><strong>Org Efficiency:</strong> Led a multidisciplinary (Mobile/Web/BE) team; transitioned from mobile-centric to a high-impact Client & Experience organization</li>
+                  <li><strong>Unified Strategy:</strong> Architected a cross-platform chat solution, slashing redundant development and unifying global product lines</li>
+                  <li><strong>Operational Excellence:</strong> Automated end-to-end UI testing, significantly increasing release velocity and reducing manual QA overhead</li>
+                </ul></div>
+              </div>
+              <div>
+                <div class="meta"><span class="role">Founding iOS Dev → iOS Team Lead</span><span class="date">2018 — 2023</span></div>
+                <div class="desc"><ul>
+                  <li><strong>Core Build:</strong> Co-built the initial Lemonade app and the AI-driven chat engine for global onboarding and claims</li>
+                  <li><strong>Global Scaling:</strong> Architected the platform for multi-currency/language support across the US and Europe</li>
+                  <li><strong>Leadership:</strong> Scaled the mobile org from 2 to 12 engineers; founded the Mobile Guild to standardize DX and performance</li>
+                  <li><strong>Platform Evolution:</strong> Overhauled mobile architecture to support squad-based scaling and rigorous automation</li>
+                </ul></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="job">
+            <div class="row">
+              <img src="assets/glance.png" alt="Glance Fashion" class="icon-32">
+              <span class="company">Glance Fashion</span>
+            </div>
+            <div class="meta"><span class="role">Senior iOS Developer</span><span class="date">Mar 2017 — Dec 2017</span></div>
+            <div class="desc"><p>Social media platform for creating, editing, sharing and discovering fashion videos.</p></div>
+          </div>
+
+          <div class="job">
+            <span class="company">Life On Air <span class="badge">Acquired by Epic Games 2019</span></span>
+            <div class="meta"><span class="role">iOS Developer</span><span class="date">May 2014 — Nov 2016</span></div>
+            <div class="desc">
+              <p>Part of a small, high-caliber team building social apps around live video.</p>
+              <ul>
+                <li><img src="assets/houseparty.png" alt="Houseparty" class="icon-20"><strong>Houseparty</strong> — Built the entire app from scratch. End-to-end architecture and product design. Integrated real-time messaging and WebRTC live video. Reached #2 on the overall App Store chart</li>
+                <li><img src="assets/meerkat.png" alt="Meerkat" class="icon-20"><strong>Meerkat</strong> — Live broadcast app on Twitter's social graph that gained massive traction</li>
+                <li><img src="assets/yevvo.png" alt="Yevvo" class="icon-20"><strong>Yevvo</strong> — Joined mid-project and rewrote major portions of the codebase</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="job">
+            <span class="company">Musician</span>
+            <div class="meta"><span class="role">Self-Employed</span><span class="date">2010 — Apr 2014</span></div>
+            <div class="desc">
+              <p>Ran a home music studio — teaching piano, creating and producing music. Worked as a pianist and performed live shows with singers and productions across Israel.</p>
+            </div>
+          </div>
+
+          <div class="job">
+            <span class="company">IDF Military Band · <span style="font-family:'Arial Hebrew','Heebo',-apple-system,sans-serif">להקה צבאית</span></span>
+            <div class="meta"><span class="role">Band Commander & Pianist</span><span class="date">Jan 2007 — Jan 2010</span></div>
+            <div class="desc">
+              <p>Led and performed with a military band. Managed rehearsals, arranged music, and performed at official ceremonies and events throughout service.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Side Projects</h2>
+          <div class="card" style="margin-bottom:12px">
+            <div class="row" style="margin-bottom:4px"><img src="assets/nexty.jpeg" alt="Nexty" class="icon-32"><h3>Nexty</h3></div>
+            <div class="sub">2026 — Present</div>
+            <p>A visual daily schedule app for Apple TV, built for my son who has ASD. Turns the living room TV into a calm, glanceable schedule — showing what's happening now, what's next, and the rest of the day. Includes a web dashboard for remote editing, weekly templates, and bilingual support.</p>
+            <div class="tags"><span class="tag">tvOS</span><span class="tag">SwiftUI</span></div>
+          </div>
+          <div class="card" style="margin-bottom:12px">
+            <div class="row" style="margin-bottom:4px"><img src="assets/memory.png" alt="#memory" class="icon-32"><h3>#memory</h3></div>
+            <div class="sub">2024 — Present</div>
+            <p>Helped build a brain extension note-taking app for macOS and iOS. Built the macOS app and performed code review for the iOS app.</p>
+            <div class="tags"><span class="tag">macOS</span><span class="tag">iOS</span></div>
+          </div>
+          <div class="card">
+            <div class="row" style="margin-bottom:4px"><img src="assets/potluck.jpg" alt="Potluck Recipes" class="icon-32"><h3>Potluck Recipes</h3><span class="badge">&#9733; 4.8</span></div>
+            <div class="sub">Oct 2019 — Present</div>
+            <p>Co-founded with my wife — a cookbook app to keep and share favorite family recipes. Started as a React Native project, migrated to native Swift, and later completely rewritten in VueJS + Ionic for full cross-platform support.</p>
+            <div class="tags"><span class="tag">VueJS</span><span class="tag">Ionic</span><span class="tag">React Native</span></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="device-panel" id="devicePanel"></div>
+      <div class="timeline" id="timeline"></div>
     </div>
-
-    <!-- Timeline -->
-    <div class="timeline" id="timeline"></div>
-
   </div>
 
-  <!-- About Overlay -->
-  <div class="about-overlay" id="aboutOverlay" role="dialog" aria-modal="true" aria-label="About Me" aria-hidden="true">
-    <button class="about-close" id="aboutClose" aria-label="Close">&times;</button>
-    <div class="about-content" id="aboutContent"></div>
-  </div>
+  <script>
+  const CAREER_DATA = [
+    { year: 2014, device: { model: 'iPhone 6', era: 'classic', ios: 8 }, apps: [{ name: 'Yevvo', icon: 'assets/yevvo.png', dock: true }, { name: 'Meerkat', icon: 'assets/meerkat.png', dock: true }], wallpaper: 'assets/wallpapers/ios8.png' },
+    { year: 2015, device: { model: 'iPhone 6s', era: 'classic', ios: 9 }, apps: [{ name: 'Meerkat', icon: 'assets/meerkat.png', dock: true }, { name: 'Houseparty', icon: 'assets/houseparty.png', dock: true }], wallpaper: 'assets/wallpapers/ios9.png' },
+    { year: 2016, device: { model: 'iPhone 7', era: 'classic', ios: 10 }, apps: [{ name: 'Houseparty', icon: 'assets/houseparty.png', dock: true }], wallpaper: 'assets/wallpapers/ios10.jpeg' },
+    { year: 2017, device: { model: 'iPhone X', era: 'notch', ios: 11 }, apps: [{ name: 'Glance', icon: 'assets/glance.png', dock: true }], wallpaper: 'assets/wallpapers/ios11.jpeg' },
+    { year: 2018, device: { model: 'iPhone XS', era: 'notch', ios: 12 }, apps: [{ name: 'Lemonade', icon: 'assets/lemonade.jpg', dock: true }], wallpaper: 'assets/wallpapers/ios12.jpeg' },
+    { year: 2019, device: { model: 'iPhone 11 Pro', era: 'notch', ios: 13, material: 'steel' }, apps: [{ name: 'Lemonade', icon: 'assets/lemonade.jpg', dock: true }, { name: 'Potluck', icon: 'assets/potluck.jpg' }], wallpaper: 'assets/wallpapers/ios13.png' },
+    { year: 2020, device: { model: 'iPhone 12 Pro', era: 'flat', ios: 14, material: 'steel' }, apps: [{ name: 'Lemonade', icon: 'assets/lemonade.jpg', dock: true }, { name: 'Potluck', icon: 'assets/potluck.jpg' }], wallpaper: 'assets/wallpapers/ios14.jpg' },
+    { year: 2021, device: { model: 'iPhone 13 Pro', era: 'flat', ios: 15, material: 'steel' }, apps: [{ name: 'Lemonade', icon: 'assets/lemonade.jpg', dock: true }, { name: 'Potluck', icon: 'assets/potluck.jpg' }], wallpaper: 'assets/wallpapers/ios15.jpg' },
+    { year: 2022, device: { model: 'iPhone 14 Pro', era: 'island', ios: 16, material: 'steel' }, apps: [{ name: 'Lemonade', icon: 'assets/lemonade.jpg', dock: true }, { name: 'Potluck', icon: 'assets/potluck.jpg' }], wallpaper: 'assets/wallpapers/ios16.jpg' },
+    { year: 2023, device: { model: 'iPhone 15 Pro', era: 'island', ios: 17, material: 'titanium' }, apps: [{ name: 'Lemonade', icon: 'assets/lemonade.jpg', dock: true }, { name: 'Potluck', icon: 'assets/potluck.jpg' }], wallpaper: 'assets/wallpapers/ios17.jpg' },
+    { year: 2024, device: { model: 'iPhone 16 Pro', era: 'island', ios: 18, material: 'titanium' }, apps: [{ name: 'Lemonade', icon: 'assets/lemonade.jpg', dock: true }, { name: 'Potluck', icon: 'assets/potluck.jpg' }, { name: '#memory', icon: 'assets/memory.png' }], wallpaper: 'assets/wallpapers/ios18.png' },
+    { year: 2025, device: { model: 'iPhone 17 Pro', era: 'island', ios: 26, material: 'titanium' }, apps: [{ name: 'Lemonade', icon: 'assets/lemonade.jpg', dock: true }, { name: 'Potluck', icon: 'assets/potluck.jpg' }, { name: '#memory', icon: 'assets/memory.png' }], wallpaper: 'assets/wallpapers/ios26.jpg' },
+    { year: 2026, device: { model: 'iPhone 17 Pro', era: 'island', ios: 26, material: 'titanium' }, apps: [{ name: 'Lemonade', icon: 'assets/lemonade.jpg', dock: true }, { name: 'Potluck', icon: 'assets/potluck.jpg' }, { name: '#memory', icon: 'assets/memory.png' }, { name: 'Nexty', icon: 'assets/nexty.jpeg' }], wallpaper: 'assets/wallpapers/ios26.jpg' }
+  ];
 
-  <!-- Scripts -->
-  <script src="js/data.js"></script>
-  <script src="js/state.js"></script>
-  <script src="js/devices.js"></script>
-  <script src="js/carousel.js"></script>
-  <script src="js/timeline.js"></script>
-  <script src="js/cv.js"></script>
-  <script src="js/theme.js"></script>
-  <script src="js/about.js"></script>
-  <script src="js/input.js"></script>
-  <script src="js/app.js"></script>
+  const WALLPAPER_GRADIENTS = { 8:'linear-gradient(135deg,#1a2a6c,#b21f1f,#fdbb2d)', 9:'linear-gradient(135deg,#667db6,#0082c8,#667db6)', 10:'linear-gradient(135deg,#2c3e50,#3498db)', 11:'linear-gradient(135deg,#0f9b8e,#24c6dc,#514a9d)', 12:'linear-gradient(135deg,#ff6e7f,#bfe9ff)', 13:'linear-gradient(135deg,#0a0a2e,#1a1a4e,#2d1b69)', 14:'linear-gradient(135deg,#a8edea,#fed6e3)', 15:'linear-gradient(135deg,#c9d6ff,#e2e2e2)', 16:'linear-gradient(135deg,#f12711,#f5af19)', 17:'linear-gradient(135deg,#fceabb,#f8b500)', 18:'linear-gradient(135deg,#4158d0,#c850c0,#ffcc70)', 26:'linear-gradient(135deg,#a18cd1,#fbc2eb)' };
 
+  // ── State ──
+  const State = (() => {
+    const totalYears = CAREER_DATA.length;
+    const firstYear = CAREER_DATA[0].year;
+    const lastYear = CAREER_DATA[totalYears - 1].year;
+    let currentIndex = totalYears - 1;
+    const listeners = [];
+    return {
+      subscribe: fn => listeners.push(fn),
+      goTo: (index, force) => { if (index >= 0 && index < totalYears && (index !== currentIndex || force)) { currentIndex = index; listeners.forEach(fn => fn(currentIndex)); } },
+      prev: () => State.goTo(currentIndex - 1),
+      next: () => State.goTo(currentIndex + 1),
+      get: () => currentIndex,
+      data: index => CAREER_DATA[index ?? currentIndex],
+      count: totalYears, start: firstYear, end: lastYear
+    };
+  })();
+
+  // ── Device ──
+  const Device = (() => {
+    const ERA_SPECS = {
+      classic: { frameW:210, frameH:420, frameR:42, screenTop:70, screenSide:12, screenBottom:70, screenR:3, notchW:0, notchH:0, islandW:0, islandH:0 },
+      notch:   { frameW:224, frameH:460, frameR:38, screenTop:8,  screenSide:8,  screenBottom:8,  screenR:30, notchW:38, notchH:16, islandW:0, islandH:0 },
+      flat:    { frameW:224, frameH:460, frameR:36, screenTop:5,  screenSide:5,  screenBottom:5,  screenR:31, notchW:30, notchH:14, islandW:0, islandH:0 },
+      island:  { frameW:224, frameH:460, frameR:36, screenTop:5,  screenSide:5,  screenBottom:5,  screenR:31, notchW:0,  notchH:0,  islandW:26, islandH:16 },
+    };
+    const PLAIN_WALLPAPER = 'linear-gradient(145deg,#2d2926,#3d3835,#4a4440)';
+    let deviceEl, frameEl, screenEl, captionEl, homeBtnEl, notchEl, islandEl, homeIndicatorEl, wallpaperFrontEl, wallpaperBackEl, dockEl, iconsGridEl;
+    let wallpaperFrontIsA = true, wallpapersEnabled = true, isFirstRender = true;
+    const currentDockApps = new Map(), currentGridApps = new Map();
+
+    function createElement(parent, className) { const el = document.createElement('div'); el.className = className; parent.appendChild(el); return el; }
+
+    function init(container) {
+      const preloaded = new Set();
+      CAREER_DATA.forEach(yearData => yearData.apps.forEach(app => { if (!preloaded.has(app.icon)) { preloaded.add(app.icon); new Image().src = app.icon; } }));
+
+      deviceEl = createElement(container, 'device');
+      frameEl = createElement(deviceEl, 'device__frame');
+      homeBtnEl = createElement(frameEl, 'device__home');
+      notchEl = createElement(frameEl, 'device__notch');
+      islandEl = createElement(frameEl, 'device__island');
+      screenEl = createElement(frameEl, 'device__screen');
+      wallpaperFrontEl = createElement(screenEl, 'device__wp'); wallpaperBackEl = createElement(screenEl, 'device__wp'); wallpaperBackEl.style.opacity = '0';
+      const statusBar = createElement(screenEl, 'device__bar');
+      statusBar.innerHTML = '<span><svg width="10" height="10" viewBox="0 0 24 24" fill="white"><g transform="translate(12,12) rotate(90) translate(-12,-12)"><path d="M21 16v-2l-8-5V3.5A1.5 1.5 0 0011.5 2 1.5 1.5 0 0010 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></g></svg></span><span><svg width="10" height="10" viewBox="0 0 24 24" fill="white"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 00-6 0zm-4-4l2 2a7.074 7.074 0 0110 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg><svg width="14" height="10" viewBox="0 0 28 14" fill="white"><rect x="0" y="1" width="23" height="12" rx="2" ry="2" fill="none" stroke="white" stroke-width="1.5"/><rect x="2" y="3" width="19" height="8" rx="1" ry="1"/><rect x="24.5" y="4.5" width="2.5" height="5" rx="1" ry="1"/></svg></span>';
+      iconsGridEl = createElement(screenEl, 'device__grid');
+      dockEl = createElement(screenEl, 'device__dock');
+      homeIndicatorEl = createElement(screenEl, 'device__indicator');
+      ['power','vol-up','vol-down','silent'].forEach(button => createElement(frameEl, 'device__side ' + button));
+      captionEl = createElement(deviceEl, 'device__caption');
+      State.subscribe(() => update());
+    }
+
+    function update() {
+      const yearData = State.data(), spec = ERA_SPECS[yearData.device.era], era = yearData.device.era;
+      const style = deviceEl.style;
+      style.setProperty('--frame-w', spec.frameW+'px'); style.setProperty('--frame-h', spec.frameH+'px'); style.setProperty('--frame-r', spec.frameR+'px');
+      style.setProperty('--screen-top', spec.screenTop+'px'); style.setProperty('--screen-side', spec.screenSide+'px'); style.setProperty('--screen-bottom', spec.screenBottom+'px'); style.setProperty('--screen-r', spec.screenR+'px');
+      style.setProperty('--notch-w', spec.notchW+'%'); style.setProperty('--notch-h', spec.notchH+'px'); style.setProperty('--island-w', spec.islandW+'%'); style.setProperty('--island-h', spec.islandH+'px');
+      deviceEl.className = `device device--${era}${yearData.device.material ? ' device--'+yearData.device.material : ''}`;
+      homeBtnEl.style.opacity = era === 'classic' ? '1' : '0';
+      notchEl.style.opacity = (era === 'notch' || era === 'flat') ? '1' : '0';
+      islandEl.style.opacity = era === 'island' ? '1' : '0';
+      homeIndicatorEl.style.opacity = era !== 'classic' ? '1' : '0';
+      captionEl.textContent = yearData.device.model + ' \u00b7 iOS ' + yearData.device.ios;
+      updateWallpaper(yearData);
+      diffApps(dockEl, currentDockApps, yearData.apps.filter(app => app.dock), calcDockPositions, spec);
+      diffApps(iconsGridEl, currentGridApps, yearData.apps.filter(app => !app.dock), calcGridPositions, spec);
+    }
+
+    function updateWallpaper(yearData) {
+      const gradient = wallpapersEnabled ? (WALLPAPER_GRADIENTS[yearData.device.ios] || WALLPAPER_GRADIENTS[26]) : PLAIN_WALLPAPER;
+      if (isFirstRender) { isFirstRender = false; wallpaperFrontEl.style.backgroundImage = gradient; wallpaperFrontEl.style.opacity = '1'; if (wallpapersEnabled && yearData.wallpaper) { const img = new Image(); img.onload = () => { wallpaperFrontEl.style.backgroundImage = `url(${yearData.wallpaper})`; }; img.src = yearData.wallpaper; } return; }
+      const backLayer = wallpaperFrontIsA ? wallpaperBackEl : wallpaperFrontEl, frontLayer = wallpaperFrontIsA ? wallpaperFrontEl : wallpaperBackEl;
+      backLayer.style.transition = 'none'; backLayer.style.opacity = '1'; backLayer.style.backgroundImage = gradient; backLayer.style.zIndex = '0'; frontLayer.style.zIndex = '1';
+      if (wallpapersEnabled && yearData.wallpaper) { const img = new Image(); img.onload = () => { backLayer.style.backgroundImage = `url(${yearData.wallpaper})`; }; img.src = yearData.wallpaper; }
+      requestAnimationFrame(() => { frontLayer.style.transition = 'opacity 0.5s'; frontLayer.style.opacity = '0'; });
+      wallpaperFrontIsA = !wallpaperFrontIsA;
+    }
+
+    function setWallpapersEnabled(enabled) { wallpapersEnabled = enabled; update(); }
+
+    function calcGridPositions(appCount, spec) {
+      const columns = 4, iconSize = 40, containerWidth = spec.frameW - 2*spec.screenSide, padding = 16, gapX = (containerWidth - padding*2 - columns*iconSize)/(columns-1);
+      return Array.from({length:appCount}, (_,i) => ({ left: padding + (i%columns)*(iconSize+gapX), top: 16 + Math.floor(i/columns)*(iconSize+29) }));
+    }
+
+    function calcDockPositions(appCount, spec) {
+      const iconSize = 40, gap = 16, containerWidth = spec.frameW - 2*spec.screenSide, totalWidth = appCount*iconSize+(appCount-1)*gap, startX = (containerWidth-totalWidth)/2;
+      return Array.from({length:appCount}, (_,i) => ({ left: startX + i*(iconSize+gap), top: 7 }));
+    }
+
+    function diffApps(container, activeApps, newApps, positionFn, spec) {
+      const newAppNames = new Set(newApps.map(app => app.name));
+      for (const [name, element] of activeApps) { if (!newAppNames.has(name)) { element.classList.add('leaving'); element.addEventListener('transitionend', () => element.remove(), {once:true}); activeApps.delete(name); } }
+      const positions = positionFn(newApps.length, spec);
+      newApps.forEach((app, index) => {
+        const position = positions[index];
+        if (!activeApps.has(app.name)) {
+          const appEl = document.createElement('div'); appEl.className = 'device__app entering';
+          const iconImg = document.createElement('img'); iconImg.src = app.icon; iconImg.alt = app.name; iconImg.width = 40; iconImg.height = 40; appEl.appendChild(iconImg);
+          const label = document.createElement('span'); label.textContent = app.name; appEl.appendChild(label);
+          appEl.style.left = position.left+'px'; appEl.style.top = position.top+'px';
+          container.appendChild(appEl);
+          requestAnimationFrame(() => requestAnimationFrame(() => appEl.classList.remove('entering')));
+          activeApps.set(app.name, appEl);
+        } else { const element = activeApps.get(app.name); element.style.left = position.left+'px'; element.style.top = position.top+'px'; }
+      });
+    }
+
+    return { init, setWallpapersEnabled };
+  })();
+
+  // ── Timeline ──
+  const Timeline = (() => {
+    let svgEl, arcPath, containerEl, innerEl, indicatorDot;
+    let yearLabels = [], yearTicks = [], yearPoints = [];
+    let isDragging = false, arcLength = 0;
+    const FIRST_YEAR = State.start, LAST_YEAR = State.end, YEAR_SPAN = LAST_YEAR - FIRST_YEAR;
+
+    function init(container) {
+      containerEl = container;
+      innerEl = document.createElement('div'); innerEl.className = 'tl-inner'; containerEl.appendChild(innerEl);
+      svgEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svgEl.setAttribute('viewBox', '0 0 1000 100'); svgEl.setAttribute('preserveAspectRatio', 'none'); svgEl.classList.add('tl-svg');
+      arcPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      arcPath.setAttribute('d', 'M 30,85 Q 500,10 970,85'); arcPath.setAttribute('class', 'tl-arc');
+      svgEl.appendChild(arcPath); innerEl.appendChild(svgEl); arcLength = arcPath.getTotalLength();
+
+      for (let year = FIRST_YEAR; year <= LAST_YEAR; year++) {
+        const progress = (year - FIRST_YEAR) / YEAR_SPAN;
+        const tickEl = document.createElement('div'); tickEl.className = 'tl-tick'; innerEl.appendChild(tickEl); yearTicks.push({ el: tickEl, progress });
+        const labelEl = document.createElement('div'); labelEl.className = 'tl-year'; labelEl.textContent = year; labelEl.dataset.year = year;
+        labelEl.addEventListener('click', event => { event.stopPropagation(); State.goTo(year - FIRST_YEAR); });
+        innerEl.appendChild(labelEl); yearLabels.push(labelEl);
+      }
+      indicatorDot = document.createElement('div'); indicatorDot.className = 'tl-dot'; containerEl.appendChild(indicatorDot);
+      layoutElements(); positionIndicator();
+      window.addEventListener('resize', () => { layoutElements(); positionIndicator(); scrollToYear(State.get()); });
+
+      containerEl.addEventListener('mousedown', onDragStart); containerEl.addEventListener('touchstart', onDragStart, { passive: false });
+      window.addEventListener('mousemove', onDragMove); window.addEventListener('touchmove', onDragMove, { passive: false });
+      window.addEventListener('mouseup', () => isDragging = false); window.addEventListener('touchend', () => isDragging = false);
+      containerEl.addEventListener('wheel', event => { event.preventDefault(); (event.deltaY > 0 || event.deltaX > 0) ? State.next() : State.prev(); }, { passive: false });
+
+      State.subscribe(index => { scrollToYear(index); yearLabels.forEach(label => label.classList.toggle('active', parseInt(label.dataset.year) - FIRST_YEAR === index)); });
+    }
+
+    function getPointOnArc(progress) {
+      const svgPoint = arcPath.getPointAtLength(progress * arcLength), svgRect = svgEl.getBoundingClientRect(), innerRect = innerEl.getBoundingClientRect();
+      return { x: svgRect.left - innerRect.left + (svgPoint.x / 1000) * svgRect.width, y: svgRect.top - innerRect.top + (svgPoint.y / 100) * svgRect.height };
+    }
+
+    function getTangentAngle(progress) {
+      const length = progress * arcLength, pointBefore = arcPath.getPointAtLength(Math.max(0, length - 2)), pointAfter = arcPath.getPointAtLength(Math.min(arcLength, length + 2)), svgRect = svgEl.getBoundingClientRect();
+      return Math.atan2((pointAfter.y - pointBefore.y) / 100 * svgRect.height, (pointAfter.x - pointBefore.x) / 1000 * svgRect.width);
+    }
+
+    function layoutElements() {
+      innerEl.style.transition = 'none'; innerEl.style.transform = 'none'; innerEl.offsetHeight; yearPoints = [];
+      yearTicks.forEach(({ el, progress }) => { const point = getPointOnArc(progress), angle = getTangentAngle(progress) - Math.PI / 2; el.style.left = point.x + 'px'; el.style.top = point.y + 'px'; el.style.width = '8px'; el.style.transform = `translate(-50%,-50%) rotate(${angle + Math.PI}rad)`; });
+      yearLabels.forEach(label => { const year = parseInt(label.dataset.year), progress = (year - FIRST_YEAR) / YEAR_SPAN, point = getPointOnArc(progress), angle = getTangentAngle(progress), degrees = angle * 180 / Math.PI; label.style.left = point.x + 'px'; label.style.top = (point.y + 10) + 'px'; label.style.transform = `translateX(-50%) rotate(${degrees}deg)`; yearPoints.push({ x: point.x, y: point.y, angle }); });
+      requestAnimationFrame(() => innerEl.style.transition = '');
+    }
+
+    function positionIndicator() { indicatorDot.style.left = containerEl.offsetWidth / 2 + 'px'; indicatorDot.style.top = containerEl.offsetHeight * 0.4 + 'px'; }
+
+    function scrollToYear(index) { if (!yearPoints.length) return; const centerX = containerEl.offsetWidth / 2, centerY = containerEl.offsetHeight * 0.4, point = yearPoints[index], degrees = point.angle * 180 / Math.PI; innerEl.style.transform = `translate(${centerX}px,${centerY}px) rotate(${-degrees}deg) translate(${-point.x}px,${-point.y}px)`; }
+
+    function onDragStart(event) { isDragging = true; onDragMove(event); }
+    function onDragMove(event) { if (!isDragging) return; event.preventDefault(); const rect = containerEl.getBoundingClientRect(), clientX = (event.touches ? event.touches[0].clientX : event.clientX), relativeX = (clientX - rect.left) / rect.width, currentIndex = State.get(), newIndex = Math.round(Math.max(0, Math.min(YEAR_SPAN, currentIndex + (relativeX - 0.5) * 6))); if (newIndex !== currentIndex) State.goTo(newIndex); }
+
+    return { init };
+  })();
+
+  // ── Boot ──
+  (() => {
+    function boot() {
+      // Theme
+      const saved = localStorage.getItem('theme');
+      if (saved) document.documentElement.setAttribute('data-theme', saved);
+      else if (matchMedia('(prefers-color-scheme:dark)').matches) document.documentElement.setAttribute('data-theme', 'dark');
+      const meta = document.getElementById('themeColorMeta');
+      meta.content = document.documentElement.dataset.theme === 'dark' ? '#0f0f0f' : '#fafafa';
+
+      document.getElementById('themeToggle').addEventListener('click', () => {
+        const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', next);
+        document.documentElement.style.colorScheme = next;
+        meta.content = next === 'dark' ? '#0f0f0f' : '#fafafa';
+        localStorage.setItem('theme', next);
+      });
+
+      // Device + Timeline
+      Device.init(document.getElementById('devicePanel'));
+      Timeline.init(document.getElementById('timeline'));
+
+      // Keyboard
+      document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft') { e.preventDefault(); State.prev(); }
+        else if (e.key === 'ArrowRight') { e.preventDefault(); State.next(); }
+      });
+
+      // Wallpaper toggle
+      const wallpaperButton = document.getElementById('wpToggle');
+      const wallpapersOn = localStorage.getItem('wallpapers') !== 'off';
+      wallpaperButton.classList.toggle('active', wallpapersOn);
+      Device.setWallpapersEnabled(wallpapersOn);
+      wallpaperButton.addEventListener('click', () => {
+        const enabled = !wallpaperButton.classList.contains('active');
+        wallpaperButton.classList.toggle('active', enabled);
+        Device.setWallpapersEnabled(enabled);
+        localStorage.setItem('wallpapers', enabled ? 'on' : 'off');
+      });
+
+      // Device visibility toggle
+      const deviceToggleButton = document.getElementById('deviceToggle');
+      deviceToggleButton.addEventListener('click', () => {
+        document.querySelector('.stage').classList.toggle('collapsed');
+        deviceToggleButton.classList.toggle('active');
+      });
+
+      // Wheel navigation on device panel
+      const devicePanel = document.querySelector('.device-panel');
+      if (devicePanel) {
+        let wheelAccumulator = 0;
+        devicePanel.addEventListener('wheel', event => {
+          event.preventDefault();
+          const delta = Math.abs(event.deltaY) > Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
+          wheelAccumulator += delta;
+          if (wheelAccumulator >= 200) { State.next(); wheelAccumulator = 0; }
+          else if (wheelAccumulator <= -200) { State.prev(); wheelAccumulator = 0; }
+        }, { passive: false });
+      }
+
+      // Show header info when hero scrolls out of view
+      const heroElement = document.getElementById('hero');
+      const headerInfoBar = document.getElementById('headerInfo');
+      new IntersectionObserver(([entry]) => {
+        headerInfoBar.classList.toggle('visible', !entry.isIntersecting);
+      }, { root: document.getElementById('cv'), threshold: 0 }).observe(heroElement);
+
+      // CV scroll position drives timeline year
+      const cvScrollPanel = document.getElementById('cv');
+      const maxYearIndex = State.count - 1;
+      const experienceSection = document.getElementById('expSection');
+      cvScrollPanel.addEventListener('scroll', () => {
+        const scrollableHeight = cvScrollPanel.scrollHeight - cvScrollPanel.clientHeight;
+        if (scrollableHeight <= 0) return;
+        const scrollStart = experienceSection.offsetTop;
+        const scrollEnd = experienceSection.offsetTop + experienceSection.offsetHeight * 0.7;
+        const scrollRange = scrollEnd - scrollStart;
+        const scrollProgress = Math.max(0, Math.min((cvScrollPanel.scrollTop - scrollStart) / scrollRange, 1));
+        const yearIndex = Math.round(maxYearIndex - scrollProgress * maxYearIndex);
+        if (yearIndex !== State.get()) State.goTo(yearIndex);
+      }, { passive: true });
+
+      // Scale device to fit available panel height
+      function scaleDeviceToFit() {
+        const deviceElement = document.querySelector('.device'); if (!deviceElement) return;
+        const panelElement = document.getElementById('devicePanel');
+        const availableHeight = panelElement.clientHeight - 160; // 20px top + 140px bottom padding
+        deviceElement.style.transform = `scale(${Math.min(availableHeight / 490, 1.3)})`;
+      }
+      window.addEventListener('resize', scaleDeviceToFit);
+
+      State.goTo(State.count - 1, true);
+      requestAnimationFrame(() => { document.querySelector('.app').classList.add('loaded'); scaleDeviceToFit(); });
+    }
+    document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', boot) : boot();
+  })();
+  </script>
 </body>
 </html>

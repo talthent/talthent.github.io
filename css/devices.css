@@ -1,37 +1,70 @@
 /* ══════════════════════════════════════════
-   iPhone CSS Device Frames
-   4 eras: classic, notch, flat, island
+   Single Morphing Device
+   CSS custom properties drive all transitions
    ══════════════════════════════════════════ */
 
+:root {
+  --spring: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Device wrapper ── */
 .device {
   position: relative;
   flex-shrink: 0;
   filter:
     drop-shadow(0 4px 8px rgba(0,0,0,0.08))
     drop-shadow(0 16px 48px rgba(0,0,0,0.1));
+  cursor: pointer;
 }
 
+/* ── Frame ── */
 .device__frame {
   position: relative;
   overflow: hidden;
+  width: var(--frame-w);
+  height: var(--frame-h);
+  border-radius: var(--frame-r);
+  transition:
+    width 0.7s var(--spring),
+    height 0.7s var(--spring),
+    border-radius 0.5s var(--spring),
+    background 0.4s ease,
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
 }
 
+/* ── Screen ── */
 .device__screen {
   position: absolute;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   z-index: 1;
+  top: var(--screen-top);
+  left: var(--screen-side);
+  right: var(--screen-side);
+  bottom: var(--screen-bottom);
+  border-radius: var(--screen-r);
+  background: #000;
+  transition:
+    top 0.7s var(--spring),
+    left 0.7s var(--spring),
+    right 0.7s var(--spring),
+    bottom 0.7s var(--spring),
+    border-radius 0.5s var(--spring);
 }
 
+/* ── Wallpaper (two layers for cross-fade) ── */
 .device__wallpaper {
   position: absolute;
   inset: 0;
   background-size: cover;
   background-position: center;
   z-index: 0;
+  transition: opacity 0.5s ease;
 }
 
+/* ── Status Bar ── */
 .device__statusbar {
   position: relative;
   z-index: 2;
@@ -53,23 +86,35 @@
   gap: 3px;
 }
 
+/* ── App Icons Area ── */
 .device__icons {
   position: relative;
   z-index: 1;
   flex: 1;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  padding: 20px 16px;
-  align-content: start;
-  justify-items: center;
 }
 
 .device__app {
+  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 3px;
+  transition:
+    left 0.5s var(--spring),
+    top 0.5s var(--spring),
+    transform 0.5s var(--spring),
+    opacity 0.5s var(--spring);
+}
+
+.device__app--entering {
+  opacity: 0;
+  transform: scale(0.3);
+}
+
+.device__app--leaving {
+  opacity: 0;
+  transform: scale(0.3);
+  pointer-events: none;
 }
 
 .device__app-icon {
@@ -91,18 +136,20 @@
   white-space: nowrap;
 }
 
+/* ── Dock ── */
 .device__dock {
   position: absolute;
   z-index: 3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  padding: 10px 16px 22px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
   background: rgba(255,255,255,0.15);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid rgba(255,255,255,0.1);
+  border-radius: 0 0 var(--screen-r) var(--screen-r);
+  transition: border-radius 0.5s var(--spring);
 }
 
 .device__dock .device__app-icon {
@@ -114,42 +161,7 @@
   font-size: 6px;
 }
 
-/* Per-era dock: must match screen inset and bottom border-radius */
-
-/* Classic — screen: inset 12px, bottom 70px, radius 3px */
-.device--classic .device__dock {
-  bottom: 70px;
-  left: 12px;
-  right: 12px;
-  padding-bottom: 10px;
-  border-radius: 0 0 3px 3px;
-}
-
-/* Notch — screen: inset 6px, radius 32px */
-.device--notch .device__dock {
-  bottom: 6px;
-  left: 6px;
-  right: 6px;
-  border-radius: 0 0 32px 32px;
-}
-
-/* Flat — screen: inset 5px, radius 31px */
-.device--flat .device__dock {
-  bottom: 5px;
-  left: 5px;
-  right: 5px;
-  border-radius: 0 0 31px 31px;
-}
-
-/* Island — screen: inset 5px, radius 31px */
-.device--island .device__dock {
-  bottom: 5px;
-  left: 5px;
-  right: 5px;
-  border-radius: 0 0 31px 31px;
-}
-
-/* ── Home Indicator (for notch/flat/island eras) ── */
+/* ── Home Indicator ── */
 .device__home-indicator {
   position: absolute;
   bottom: 6px;
@@ -160,99 +172,13 @@
   border-radius: 2px;
   background: rgba(255,255,255,0.5);
   z-index: 3;
+  transition: opacity 0.4s ease;
 }
 
-/* ── Side Buttons ── */
-.device__side-btn {
-  position: absolute;
-  z-index: 6;
-  border-radius: 2px;
-}
-
-.device__side-btn--power {
-  right: -3px;
-  width: 3px;
-}
-
-.device__side-btn--vol-up,
-.device__side-btn--vol-down {
-  left: -3px;
-  width: 3px;
-}
-
-.device__side-btn--silent {
-  left: -3px;
-  width: 3px;
-  height: 10px;
-  border-radius: 1px;
-}
-
-/* ══════════════════════════════════════════
-   Era 1: Classic (2014-2016)
-   iPhone 6, 6s, 7 — rounded, home button
-   ══════════════════════════════════════════ */
-
-.device--classic .device__frame {
-  width: 210px;
-  height: 420px;
-  border-radius: 42px;
-  background: linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 50%, #181818 100%);
-  border: 1px solid rgba(255,255,255,0.06);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.06),
-    inset 0 -1px 0 rgba(0,0,0,0.15);
-}
-
-[data-theme="dark"] .device--classic .device__frame {
-  background: linear-gradient(180deg, #e8e8e8 0%, #d8d8d8 50%, #ccc 100%);
-  border-color: rgba(255,255,255,0.3);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.4),
-    inset 0 -1px 0 rgba(0,0,0,0.06);
-}
-
-.device--classic .device__screen {
-  top: 70px;
-  left: 12px;
-  right: 12px;
-  bottom: 70px;
-  border-radius: 3px;
-  background: #000;
-  box-shadow: inset 0 0 3px rgba(0,0,0,0.5);
-}
-
-/* Speaker grille */
-.device--classic .device__frame::before {
-  content: '';
-  position: absolute;
-  top: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 30px;
-  height: 4px;
-  border-radius: 2px;
-  background: linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.4));
-  box-shadow: inset 0 1px 1px rgba(0,0,0,0.3);
-  z-index: 5;
-}
-
-/* Front camera */
-.device--classic .device__frame::after {
-  content: '';
-  position: absolute;
-  top: 19px;
-  left: 50%;
-  transform: translateX(-50%) translateX(-26px);
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #2a2a3a 40%, #1a1a2a 60%, rgba(0,0,0,0.4) 100%);
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.3);
-  z-index: 5;
-}
+/* ── Era Elements (all present, toggle via opacity) ── */
 
 /* Home button */
-.device--classic .device__home-btn {
+.device__home-btn {
   position: absolute;
   bottom: 13px;
   left: 50%;
@@ -266,18 +192,10 @@
     0 1px 2px rgba(0,0,0,0.3),
     inset 0 1px 1px rgba(255,255,255,0.08);
   z-index: 5;
+  transition: opacity 0.4s ease;
 }
 
-[data-theme="dark"] .device--classic .device__home-btn {
-  border-color: rgba(0,0,0,0.15);
-  background: linear-gradient(180deg, #d0d0d0, #b8b8b8);
-  box-shadow:
-    0 1px 2px rgba(0,0,0,0.1),
-    inset 0 1px 1px rgba(255,255,255,0.5);
-}
-
-/* Touch ID ring */
-.device--classic .device__home-btn::after {
+.device__home-btn::after {
   content: '';
   position: absolute;
   top: 50%;
@@ -287,114 +205,37 @@
   height: 22px;
   border-radius: 4px;
   border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: inset 0 0 1px rgba(0,0,0,0.2);
 }
 
-[data-theme="dark"] .device--classic .device__home-btn::after {
+[data-theme="dark"] .device__home-btn {
+  border-color: rgba(0,0,0,0.15);
+  background: linear-gradient(180deg, #d0d0d0, #b8b8b8);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1), inset 0 1px 1px rgba(255,255,255,0.5);
+}
+
+[data-theme="dark"] .device__home-btn::after {
   border-color: rgba(0,0,0,0.12);
 }
 
-/* Side buttons — classic */
-.device--classic .device__side-btn--power {
-  right: -2px;
-  top: 80px;
-  height: 28px;
-  background: linear-gradient(90deg, #222, #333);
-}
-
-.device--classic .device__side-btn--vol-up {
-  left: -2px;
-  top: 76px;
-  height: 22px;
-  background: linear-gradient(270deg, #222, #333);
-}
-
-.device--classic .device__side-btn--vol-down {
-  left: -2px;
-  top: 104px;
-  height: 22px;
-  background: linear-gradient(270deg, #222, #333);
-}
-
-.device--classic .device__side-btn--silent {
-  left: -2px;
-  top: 56px;
-  background: linear-gradient(270deg, #222, #333);
-}
-
-[data-theme="dark"] .device--classic .device__side-btn--power {
-  background: linear-gradient(90deg, #bbb, #d0d0d0);
-}
-
-[data-theme="dark"] .device--classic .device__side-btn--vol-up,
-[data-theme="dark"] .device--classic .device__side-btn--vol-down,
-[data-theme="dark"] .device--classic .device__side-btn--silent {
-  background: linear-gradient(270deg, #bbb, #d0d0d0);
-}
-
-.device--classic .device__statusbar {
-  height: 16px;
-  padding: 2px 6px 0;
-}
-
-.device--classic .device__icons {
-  padding: 12px 10px;
-  gap: 10px;
-}
-
-.device--classic .device__app-icon {
-  width: 44px;
-  height: 44px;
-}
-
-/* ══════════════════════════════════════════
-   Era 2: Notch (2017-2019)
-   iPhone X, XS, 11 Pro — notch, edge-to-edge
-   ══════════════════════════════════════════ */
-
-.device--notch .device__frame {
-  width: 224px;
-  height: 460px;
-  border-radius: 38px;
-  background: linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 50%, #181818 100%);
-  border: 1px solid rgba(255,255,255,0.06);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.06),
-    inset 0 -1px 0 rgba(0,0,0,0.15);
-}
-
-[data-theme="dark"] .device--notch .device__frame {
-  background: linear-gradient(180deg, #e0e0e0 0%, #d0d0d0 50%, #c4c4c4 100%);
-  border-color: rgba(255,255,255,0.3);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.4),
-    inset 0 -1px 0 rgba(0,0,0,0.06);
-}
-
-.device--notch .device__screen {
-  top: 6px;
-  left: 6px;
-  right: 6px;
-  bottom: 6px;
-  border-radius: 32px;
-  background: #000;
-  box-shadow: inset 0 0 2px rgba(0,0,0,0.4);
-}
-
 /* Notch */
-.device--notch .device__notch {
+.device__notch {
   position: absolute;
-  top: 6px;
+  top: var(--screen-top);
   left: 50%;
   transform: translateX(-50%);
-  width: 38%;
-  height: 16px;
+  width: var(--notch-w);
+  height: var(--notch-h);
   background: #0a0a0a;
   border-radius: 0 0 8px 8px;
   z-index: 5;
+  transition:
+    opacity 0.4s ease,
+    width 0.5s var(--spring),
+    height 0.5s var(--spring),
+    top 0.7s var(--spring);
 }
 
-.device--notch .device__notch::after {
+.device__notch::after {
   content: '';
   position: absolute;
   top: 4px;
@@ -406,215 +247,25 @@
   box-shadow: 0 0 0 1px rgba(40,40,60,0.5);
 }
 
-/* Side buttons — notch */
-.device--notch .device__side-btn--power {
-  right: -2px;
-  top: 100px;
-  height: 36px;
-  background: linear-gradient(90deg, #222, #333);
-}
-
-.device--notch .device__side-btn--vol-up {
-  left: -2px;
-  top: 90px;
-  height: 24px;
-  background: linear-gradient(270deg, #222, #333);
-}
-
-.device--notch .device__side-btn--vol-down {
-  left: -2px;
-  top: 120px;
-  height: 24px;
-  background: linear-gradient(270deg, #222, #333);
-}
-
-.device--notch .device__side-btn--silent {
-  left: -2px;
-  top: 70px;
-  background: linear-gradient(270deg, #222, #333);
-}
-
-[data-theme="dark"] .device--notch .device__side-btn--power {
-  background: linear-gradient(90deg, #bbb, #d0d0d0);
-}
-
-[data-theme="dark"] .device--notch .device__side-btn--vol-up,
-[data-theme="dark"] .device--notch .device__side-btn--vol-down,
-[data-theme="dark"] .device--notch .device__side-btn--silent {
-  background: linear-gradient(270deg, #bbb, #d0d0d0);
-}
-
-.device--notch .device__statusbar {
-  height: 16px;
-  padding: 2px 20px 0;
-}
-
-.device--notch .device__icons {
-  padding-top: 16px;
-}
-
-/* ══════════════════════════════════════════
-   Era 3: Flat (2020-2021)
-   iPhone 12/13 Pro — flat edges
-   ══════════════════════════════════════════ */
-
-.device--flat .device__frame {
-  width: 224px;
-  height: 460px;
-  border-radius: 36px;
-  background: linear-gradient(180deg, #262626 0%, #1a1a1a 50%, #141414 100%);
-  border: 1px solid rgba(255,255,255,0.04);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.05),
-    inset 0 -1px 0 rgba(0,0,0,0.2);
-}
-
-[data-theme="dark"] .device--flat .device__frame {
-  background: linear-gradient(180deg, #ddd 0%, #ccc 50%, #c0c0c0 100%);
-  border-color: rgba(255,255,255,0.3);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.4),
-    inset 0 -1px 0 rgba(0,0,0,0.06);
-}
-
-.device--flat .device__screen {
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
-  border-radius: 31px;
-  background: #000;
-  box-shadow: inset 0 0 2px rgba(0,0,0,0.4);
-}
-
-/* Notch (smaller — 13 Pro) */
-.device--flat .device__notch {
-  position: absolute;
-  top: 5px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 30%;
-  height: 14px;
-  background: #0a0a0a;
-  border-radius: 0 0 7px 7px;
-  z-index: 5;
-}
-
-.device--flat .device__notch::after {
-  content: '';
-  position: absolute;
-  top: 3px;
-  right: 12px;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #1a1a2e 30%, #0d0d1a 70%);
-  box-shadow: 0 0 0 1px rgba(40,40,60,0.5);
-}
-
-/* Side buttons — flat */
-.device--flat .device__side-btn--power {
-  right: -3px;
-  top: 100px;
-  height: 36px;
-  width: 3px;
-  border-radius: 0 2px 2px 0;
-  background: linear-gradient(90deg, #1a1a1a, #2a2a2a, #1a1a1a);
-}
-
-.device--flat .device__side-btn--vol-up {
-  left: -3px;
-  top: 90px;
-  height: 24px;
-  width: 3px;
-  border-radius: 2px 0 0 2px;
-  background: linear-gradient(270deg, #1a1a1a, #2a2a2a, #1a1a1a);
-}
-
-.device--flat .device__side-btn--vol-down {
-  left: -3px;
-  top: 120px;
-  height: 24px;
-  width: 3px;
-  border-radius: 2px 0 0 2px;
-  background: linear-gradient(270deg, #1a1a1a, #2a2a2a, #1a1a1a);
-}
-
-.device--flat .device__side-btn--silent {
-  left: -3px;
-  top: 70px;
-  border-radius: 2px 0 0 2px;
-  background: linear-gradient(270deg, #1a1a1a, #2a2a2a, #1a1a1a);
-}
-
-[data-theme="dark"] .device--flat .device__side-btn--power {
-  background: linear-gradient(90deg, #bbb, #d5d5d5, #bbb);
-}
-
-[data-theme="dark"] .device--flat .device__side-btn--vol-up,
-[data-theme="dark"] .device--flat .device__side-btn--vol-down,
-[data-theme="dark"] .device--flat .device__side-btn--silent {
-  background: linear-gradient(270deg, #bbb, #d5d5d5, #bbb);
-}
-
-.device--flat .device__statusbar {
-  height: 14px;
-  padding: 2px 18px 0;
-}
-
-.device--flat .device__icons {
-  padding-top: 14px;
-}
-
-/* ══════════════════════════════════════════
-   Era 4: Dynamic Island (2022-2026)
-   iPhone 14 Pro+ / 15+ / 16 / 17
-   ══════════════════════════════════════════ */
-
-.device--island .device__frame {
-  width: 224px;
-  height: 460px;
-  border-radius: 36px;
-  background: linear-gradient(180deg, #262626 0%, #1a1a1a 50%, #141414 100%);
-  border: 1px solid rgba(255,255,255,0.04);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.05),
-    inset 0 -1px 0 rgba(0,0,0,0.2);
-}
-
-[data-theme="dark"] .device--island .device__frame {
-  background: linear-gradient(180deg, #ddd 0%, #ccc 50%, #c0c0c0 100%);
-  border-color: rgba(255,255,255,0.3);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.4),
-    inset 0 -1px 0 rgba(0,0,0,0.06);
-}
-
-.device--island .device__screen {
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
-  border-radius: 31px;
-  background: #000;
-  box-shadow: inset 0 0 2px rgba(0,0,0,0.4);
-}
-
-/* Dynamic Island pill */
-.device--island .device__island {
+/* Dynamic Island */
+.device__island {
   position: absolute;
   top: 14px;
   left: 50%;
   transform: translateX(-50%);
-  width: 26%;
-  height: 16px;
+  width: var(--island-w);
+  height: var(--island-h);
   background: #0a0a0a;
   border-radius: 50px;
   z-index: 5;
   box-shadow: 0 0 0 0.5px rgba(60,60,60,0.3);
+  transition:
+    opacity 0.4s ease,
+    width 0.5s var(--spring),
+    height 0.5s var(--spring);
 }
 
-.device--island .device__island::after {
+.device__island::after {
   content: '';
   position: absolute;
   top: 50%;
@@ -627,8 +278,15 @@
   box-shadow: 0 0 0 1px rgba(40,40,60,0.4);
 }
 
-/* Side buttons — island */
-.device--island .device__side-btn--power {
+/* ── Side Buttons ── */
+.device__side-btn {
+  position: absolute;
+  z-index: 6;
+  border-radius: 2px;
+  transition: background 0.3s ease;
+}
+
+.device__side-btn--power {
   right: -3px;
   top: 100px;
   height: 36px;
@@ -637,7 +295,7 @@
   background: linear-gradient(90deg, #1a1a1a, #2a2a2a, #1a1a1a);
 }
 
-.device--island .device__side-btn--vol-up {
+.device__side-btn--vol-up {
   left: -3px;
   top: 90px;
   height: 24px;
@@ -646,7 +304,7 @@
   background: linear-gradient(270deg, #1a1a1a, #2a2a2a, #1a1a1a);
 }
 
-.device--island .device__side-btn--vol-down {
+.device__side-btn--vol-down {
   left: -3px;
   top: 120px;
   height: 24px;
@@ -655,184 +313,137 @@
   background: linear-gradient(270deg, #1a1a1a, #2a2a2a, #1a1a1a);
 }
 
-.device--island .device__side-btn--silent {
+.device__side-btn--silent {
   left: -3px;
   top: 70px;
+  width: 3px;
+  height: 10px;
   border-radius: 2px 0 0 2px;
   background: linear-gradient(270deg, #1a1a1a, #2a2a2a, #1a1a1a);
 }
 
-[data-theme="dark"] .device--island .device__side-btn--power {
-  background: linear-gradient(90deg, #bbb, #d5d5d5, #bbb);
+/* ── Frame Gradients per Era ── */
+
+/* Classic — dark bezel (light) / silver (dark) */
+.device--classic .device__frame {
+  background: linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 50%, #181818 100%);
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -1px 0 rgba(0,0,0,0.15);
 }
 
-[data-theme="dark"] .device--island .device__side-btn--vol-up,
-[data-theme="dark"] .device--island .device__side-btn--vol-down,
-[data-theme="dark"] .device--island .device__side-btn--silent {
-  background: linear-gradient(270deg, #bbb, #d5d5d5, #bbb);
+[data-theme="dark"] .device--classic .device__frame {
+  background: linear-gradient(180deg, #e8e8e8 0%, #d8d8d8 50%, #ccc 100%);
+  border-color: rgba(255,255,255,0.3);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -1px 0 rgba(0,0,0,0.06);
 }
 
-/* Action button (replaces silent switch on 15 Pro+) */
-.device--island.device--titanium .device__side-btn--silent {
-  height: 12px;
-  border-radius: 2px 0 0 2px;
+/* Notch */
+.device--notch .device__frame {
+  background: linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 50%, #181818 100%);
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -1px 0 rgba(0,0,0,0.15);
 }
 
-.device--island .device__statusbar {
-  height: 25px;
-  padding: 6px 18px 0;
+[data-theme="dark"] .device--notch .device__frame {
+  background: linear-gradient(180deg, #e0e0e0 0%, #d0d0d0 50%, #c4c4c4 100%);
+  border-color: rgba(255,255,255,0.3);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -1px 0 rgba(0,0,0,0.06);
 }
 
-.device--island .device__icons {
-  padding-top: 10px;
+/* Flat */
+.device--flat .device__frame {
+  background: linear-gradient(180deg, #262626 0%, #1a1a1a 50%, #141414 100%);
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.2);
 }
 
-/* ══════════════════════════════════════════
-   Pro Materials: Stainless Steel & Titanium
-   ══════════════════════════════════════════ */
+[data-theme="dark"] .device--flat .device__frame {
+  background: linear-gradient(180deg, #ddd 0%, #ccc 50%, #c0c0c0 100%);
+  border-color: rgba(255,255,255,0.3);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -1px 0 rgba(0,0,0,0.06);
+}
 
-/* Stainless steel — polished black (light) / polished silver (dark) */
-/* Light theme: glossy space black */
+/* Island */
+.device--island .device__frame {
+  background: linear-gradient(180deg, #262626 0%, #1a1a1a 50%, #141414 100%);
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.2);
+}
+
+[data-theme="dark"] .device--island .device__frame {
+  background: linear-gradient(180deg, #ddd 0%, #ccc 50%, #c0c0c0 100%);
+  border-color: rgba(255,255,255,0.3);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -1px 0 rgba(0,0,0,0.06);
+}
+
+/* ── Materials ── */
+
+/* Stainless steel */
 .device--steel .device__frame {
   background: linear-gradient(160deg,
     #3a3a3a 0%, #222 15%, #444 30%, #1a1a1a 50%,
     #333 70%, #252525 85%, #3a3a3a 100%) !important;
   border-color: rgba(255,255,255,0.06) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.1),
-    inset 0 -1px 0 rgba(0,0,0,0.15) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -1px 0 rgba(0,0,0,0.15) !important;
 }
 
-.device--steel .device__side-btn--power {
-  background: linear-gradient(90deg, #222, #3a3a3a, #222) !important;
-}
-
-.device--steel .device__side-btn--vol-up,
-.device--steel .device__side-btn--vol-down,
-.device--steel .device__side-btn--silent {
-  background: linear-gradient(270deg, #222, #3a3a3a, #222) !important;
-}
-
-/* Dark theme: polished silver steel */
 [data-theme="dark"] .device--steel .device__frame {
   background: linear-gradient(160deg,
     #eee 0%, #d8d8d8 15%, #f4f4f4 30%, #ccc 50%,
     #e0e0e0 70%, #d0d0d0 85%, #e8e8e8 100%) !important;
   border-color: rgba(255,255,255,0.3) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.5),
-    inset 0 -1px 0 rgba(0,0,0,0.04) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(0,0,0,0.04) !important;
 }
 
-[data-theme="dark"] .device--steel .device__side-btn--power {
-  background: linear-gradient(90deg, #ccc, #eee, #ccc) !important;
-}
-
-[data-theme="dark"] .device--steel .device__side-btn--vol-up,
-[data-theme="dark"] .device--steel .device__side-btn--vol-down,
-[data-theme="dark"] .device--steel .device__side-btn--silent {
-  background: linear-gradient(270deg, #ccc, #eee, #ccc) !important;
-}
-
-/* Titanium — brushed dark (light) / brushed natural (dark) */
-/* Light theme: dark titanium */
+/* Titanium */
 .device--titanium .device__frame {
   background: linear-gradient(180deg,
     #3e3a36 0%, #34302c 30%, #2a2622 60%, #322e2a 100%) !important;
   border-color: rgba(255,255,255,0.04) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.06),
-    inset 0 -1px 0 rgba(0,0,0,0.1) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -1px 0 rgba(0,0,0,0.1) !important;
 }
 
-.device--titanium .device__side-btn--power {
-  background: linear-gradient(90deg, #2a2622, #3e3a36, #2a2622) !important;
-}
-
-.device--titanium .device__side-btn--vol-up,
-.device--titanium .device__side-btn--vol-down,
-.device--titanium .device__side-btn--silent {
-  background: linear-gradient(270deg, #2a2622, #3e3a36, #2a2622) !important;
-}
-
-/* Dark theme: natural titanium */
 [data-theme="dark"] .device--titanium .device__frame {
   background: linear-gradient(180deg,
     #d2cdc6 0%, #c4bfb7 30%, #b8b3ab 60%, #c0bbb3 100%) !important;
   border-color: rgba(180,170,160,0.2) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.2),
-    inset 0 -1px 0 rgba(0,0,0,0.04) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.04) !important;
 }
 
-[data-theme="dark"] .device--titanium .device__side-btn--power {
-  background: linear-gradient(90deg, #b0a89e, #c8c0b6, #b0a89e) !important;
+/* Dark theme side buttons */
+[data-theme="dark"] .device__side-btn--power {
+  background: linear-gradient(90deg, #bbb, #d5d5d5, #bbb);
 }
 
-[data-theme="dark"] .device--titanium .device__side-btn--vol-up,
-[data-theme="dark"] .device--titanium .device__side-btn--vol-down,
-[data-theme="dark"] .device--titanium .device__side-btn--silent {
-  background: linear-gradient(270deg, #b0a89e, #c8c0b6, #b0a89e) !important;
+[data-theme="dark"] .device__side-btn--vol-up,
+[data-theme="dark"] .device__side-btn--vol-down,
+[data-theme="dark"] .device__side-btn--silent {
+  background: linear-gradient(270deg, #bbb, #d5d5d5, #bbb);
 }
 
-/* ══════════════════════════════════════════
-   Device Model Label
-   ══════════════════════════════════════════ */
+/* ── Caption ── */
+.device__caption {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 0.7rem;
+  font-weight: 300;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+  transition: color var(--transition);
+}
 
+/* ── Model Label (hidden) ── */
 .device__model-label {
   display: none;
 }
 
-/* ── Mobile Device Sizing ── */
+/* ── Mobile ── */
 @media (max-width: 768px) {
-  .device--classic .device__frame {
-    width: 120px;
-    height: 240px;
+  .device {
+    transform: scale(0.58);
+    transform-origin: center center;
   }
-  .device--classic .device__screen {
-    top: 40px;
-    left: 7px;
-    right: 7px;
-    bottom: 40px;
-  }
-  .device--classic .device__home-btn {
-    width: 22px;
-    height: 22px;
-    bottom: 9px;
-  }
-  .device--notch .device__frame {
-    width: 130px;
-    height: 266px;
-  }
-  .device--notch .device__screen {
-    top: 4px;
-    left: 4px;
-    right: 4px;
-    bottom: 4px;
-  }
-  .device--flat .device__frame,
-  .device--island .device__frame {
-    width: 130px;
-    height: 266px;
-  }
-  .device--flat .device__screen,
-  .device--island .device__screen {
-    top: 3px;
-    left: 3px;
-    right: 3px;
-    bottom: 3px;
-  }
-  .device__app-icon {
-    width: 26px;
-    height: 26px;
-  }
-  .device__app-label {
-    font-size: 5px;
-  }
-  .device__icons {
-    gap: 6px;
-    padding: 10px 6px;
-  }
+
   .device__side-btn--power,
   .device__side-btn--vol-up,
   .device__side-btn--vol-down,

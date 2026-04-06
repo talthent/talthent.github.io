@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    @page { margin: 10mm 12mm; }
+    body { font-family: 'Inter', -apple-system, sans-serif; color: #1a1a1a; line-height: 1.6; padding: 0; margin: 0; -webkit-font-smoothing: antialiased; font-size: 13px; }
+
+    .hero { margin-bottom: 28px; display: flex; justify-content: space-between; align-items: flex-start; }
+    .hero-left { flex: 1; }
+    .hero h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.03em; }
+    .hero .title { font-size: 0.95rem; color: #555; margin-top: 4px; }
+    .hero .contact { font-size: 0.82rem; color: #555; margin-top: 10px; display: flex; gap: 24px; }
+    .hero .contact span { display: flex; align-items: center; gap: 6px; }
+
+    .qr-block { text-align: center; flex-shrink: 0; margin-left: 24px; }
+    .qr-block a { display: block; text-decoration: none; }
+    .qr-block img { width: 80px; height: 80px; }
+    .qr-block .qr-label { font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #2563eb; margin-bottom: 6px; }
+    .qr-block .qr-url { font-size: 0.6rem; color: #888; margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
+
+    .section { margin-bottom: 24px; }
+    .section h2 {
+      font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.1em; color: #2563eb; margin-bottom: 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section h2::after { content: ''; flex: 1; height: 1px; background: #e5e7eb; }
+
+    .desc { font-size: 0.82rem; color: #555; line-height: 1.7; margin-top: 4px; }
+    .desc ul { list-style: none; margin-top: 4px; }
+    .desc li { margin-bottom: 2px; }
+    .desc p + p { margin-top: 6px; }
+
+    .job { position: relative; padding-left: 16px; margin-bottom: 20px; }
+    .job::before { content: ''; position: absolute; left: 0; top: 8px; bottom: -12px; width: 2px; background: #e5e7eb; }
+    .job:last-child::before { bottom: 8px; }
+    .job::after { content: ''; position: absolute; left: -3px; top: 8px; width: 8px; height: 8px; border-radius: 50%; background: #2563eb; }
+
+    .row { display: flex; align-items: center; gap: 8px; }
+    .icon { width: 24px; height: 24px; border-radius: 6px; object-fit: cover; }
+    .company { font-size: 0.95rem; font-weight: 600; }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 2px; }
+    .role { font-size: 0.82rem; font-weight: 500; color: #2563eb; }
+    .date { font-size: 0.72rem; color: #888; font-family: 'JetBrains Mono', monospace; }
+    .badge { font-size: 0.62rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; padding: 2px 7px; border-radius: 4px; background: #dbeafe; color: #2563eb; margin-left: 4px; }
+    .roles > div { padding: 5px 0; }
+    .roles > div + div { border-top: 1px dashed #e5e7eb; }
+
+    .card { border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px; margin-top: 8px; }
+    .card h3 { font-size: 0.88rem; font-weight: 600; margin-bottom: 2px; }
+    .card .sub { font-size: 0.72rem; color: #888; font-family: 'JetBrains Mono', monospace; margin-bottom: 4px; }
+    .card p { font-size: 0.82rem; color: #555; line-height: 1.6; }
+    .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+    .tag { font-size: 0.68rem; font-weight: 500; padding: 2px 8px; border-radius: 4px; background: #f0f4ff; color: #2563eb; }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <div class="hero-left">
+      <h1>Tal Cohen</h1>
+      <div class="title">Mobile Tech Lead · Tel Aviv</div>
+      <div class="contact">
+        <span>📞 052-572-3333</span>
+        <span>✉️ talthent@gmail.com</span>
+      </div>
+    </div>
+    <div class="qr-block">
+      <div class="qr-label">Interactive CV</div>
+      <a href="https://talthent.github.io"><img src="assets/qr.png" alt="QR code"></a>
+      <div class="qr-url"><a href="https://talthent.github.io" style="color:#888;text-decoration:none">talthent.github.io</a></div>
+    </div>
+  </div>
+
+  <section class="section">
+    <h2>About</h2>
+    <div class="desc">
+      <p>I'm Tal, a self-taught developer from Tel Aviv, 12 years deep into building apps for Apple platforms. I care about how software feels — the small moments of delight when an interaction just works. That's what got me into this, and it's what still gets me up in the morning.</p>
+      <p>Outside of code, I've been playing piano since I was five and still hit the stage every now and then. I love food — and lately, making it too. I swim, and about a year ago I picked up silversmithing. Married to Shani, father to Ariel and Eden.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Experience</h2>
+
+    <div class="job">
+      <div class="row">
+        <img src="assets/lemonade.jpg" class="icon">
+        <span class="company">Lemonade</span>
+        <span class="badge">IPO 2020</span>
+        <span class="badge">★ 4.9</span>
+      </div>
+      <span class="date">2018 — Present · 8+ yrs</span>
+      <div class="roles">
+        <div>
+          <div class="meta"><span class="role">Mobile Tech Lead</span><span class="date">2026 — Present</span></div>
+          <div class="desc"><ul><li><strong>AI Innovation:</strong> Scaling engineering productivity by integrating Claude Code and Cursor to pioneer AI-assisted development workflows</li></ul></div>
+        </div>
+        <div>
+          <div class="meta"><span class="role">Engineering Manager</span><span class="date">Client & Experience · 2023 — 2026</span></div>
+          <div class="desc"><ul>
+            <li><strong>Org Efficiency:</strong> Led a multidisciplinary (Mobile/Web/BE) team; transitioned from mobile-centric to a high-impact Client & Experience organization</li>
+            <li><strong>Unified Strategy:</strong> Architected a cross-platform chat solution, slashing redundant development and unifying global product lines</li>
+            <li><strong>Operational Excellence:</strong> Automated end-to-end UI testing, significantly increasing release velocity and reducing manual QA overhead</li>
+          </ul></div>
+        </div>
+        <div>
+          <div class="meta"><span class="role">Founding iOS Dev → iOS Team Lead</span><span class="date">2018 — 2023</span></div>
+          <div class="desc"><ul>
+            <li><strong>Core Build:</strong> Co-built the initial Lemonade app and the AI-driven chat engine for global onboarding and claims</li>
+            <li><strong>Global Scaling:</strong> Architected the platform for multi-currency/language support across the US and Europe</li>
+            <li><strong>Leadership:</strong> Scaled the mobile org from 2 to 12 engineers; founded the Mobile Guild to standardize DX and performance</li>
+            <li><strong>Platform Evolution:</strong> Overhauled mobile architecture to support squad-based scaling and rigorous automation</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="job">
+      <div class="row">
+        <img src="assets/glance.png" class="icon">
+        <span class="company">Glance Fashion</span>
+      </div>
+      <div class="meta"><span class="role">Senior iOS Developer</span><span class="date">Mar 2017 — Dec 2017</span></div>
+      <div class="desc"><p>Social media platform for creating, editing, sharing and discovering fashion videos.</p></div>
+    </div>
+
+    <div class="job" style="page-break-before: always">
+      <span class="company">Life On Air <span class="badge">Acquired by Epic Games 2019</span></span>
+      <div class="meta"><span class="role">iOS Developer</span><span class="date">May 2014 — Nov 2016</span></div>
+      <div class="desc">
+        <p>Part of a small, high-caliber team building social apps around live video.</p>
+        <ul>
+          <li><strong>Houseparty</strong> — Built the entire app from scratch. End-to-end architecture and product design. Integrated real-time messaging and WebRTC live video. Reached #2 on the overall App Store chart</li>
+          <li><strong>Meerkat</strong> — Live broadcast app on Twitter's social graph that gained massive traction</li>
+          <li><strong>Yevvo</strong> — Joined mid-project and rewrote major portions of the codebase</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="job">
+      <span class="company">Musician</span>
+      <div class="meta"><span class="role">Self-Employed</span><span class="date">2010 — Apr 2014</span></div>
+      <div class="desc"><p>Ran a home music studio — teaching piano, creating and producing music. Worked as a pianist and performed live shows with singers and productions across Israel.</p></div>
+    </div>
+
+    <div class="job">
+      <span class="company">IDF Military Band</span>
+      <div class="meta"><span class="role">Band Commander & Pianist</span><span class="date">Jan 2007 — Jan 2010</span></div>
+      <div class="desc"><p>Led and performed with a military band. Managed rehearsals, arranged music, and performed at official ceremonies and events throughout service.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Side Projects</h2>
+    <div class="card" style="margin-bottom:10px">
+      <div class="row" style="margin-bottom:4px"><img src="assets/nexty.jpeg" class="icon"><h3>Nexty</h3></div>
+      <div class="sub">2026 — Present</div>
+      <p>A visual daily schedule app for Apple TV, built for my son who has ASD. Turns the living room TV into a calm, glanceable schedule — showing what's happening now, what's next, and the rest of the day.</p>
+    </div>
+    <div class="card" style="margin-bottom:10px">
+      <div class="row" style="margin-bottom:4px"><img src="assets/memory.png" class="icon"><h3>#memory</h3></div>
+      <div class="sub">2024 — Present</div>
+      <p>A brain extension note-taking app for macOS and iOS. Built the macOS app and performed code review for the iOS app.</p>
+    </div>
+    <div class="card">
+      <div class="row" style="margin-bottom:4px"><img src="assets/potluck.jpg" class="icon"><h3>Potluck Recipes</h3><span class="badge">★ 4.8</span></div>
+      <div class="sub">Oct 2019 — Present</div>
+      <p>Co-founded with my wife — a cookbook app to keep and share favorite family recipes. Started as React Native, migrated to native Swift, then rewritten in VueJS + Ionic.</p>
+    </div>
+  </section>
+</body>
+</html>
